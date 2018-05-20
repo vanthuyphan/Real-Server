@@ -1,0 +1,46 @@
+script.
+    function onClickDownloadCHPlay() {
+        ga('send', {
+            hitType : 'event',
+            eventCategory : 'chPlay',
+            eventAction : 'download',
+            eventLabel : 'view'
+        });
+        window.location.href = "https://play.google.com/store/apps/details?id=vn.tera.app&hl=vi";
+    }
+    function onClickDownloadAppStore() {
+        ga('send', {
+            hitType : 'event',
+            eventCategory : 'appStore',
+            eventAction : 'download',
+            eventLabel : 'view'
+        });
+        window.location.href = "https://tera.app.link/Tdcf36HNND";
+    }
+    $(window).scroll(function () {
+        if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+            $('#return-to-top').fadeIn(200);    // Fade in the arrow
+        } else {
+            $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+        }
+    });
+    $('#return-to-top').click(function () {      // When arrow is clicked
+        $('body,html').animate({
+            scrollTop: 0                       // Scroll to top of body
+        }, 500);
+    });
+    $('#links a, .search').click(function (e) {
+        e.preventDefault();
+        $('<form action="/tim-kiem" method="POST">' +
+            '<input type="hidden" name="tit" value="' + $(this).text() + '">' +
+            '</form>').appendTo($(document.body)).submit();
+    })
+    var user = !{JSON.stringify(user || {})}
+    function goToPosting() {
+        if (user && user.mob) {
+            window.open('/dang-tin', '_blank');
+        } else {
+            $('#nextPlace').val('dang-tin');
+            $('#login_popup').modal();
+        }
+    }

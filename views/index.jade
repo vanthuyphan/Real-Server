@@ -1,0 +1,48 @@
+doctype html
+html(lang='en-US')
+    head
+        meta(charset='UTF-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='description', content='Amrita')
+        meta(name='generator', content='Free Coming Soon & Maintenance Mode plugin for WordPress')
+        title Amrita
+        link(rel='shortcut icon', href='http://absoluteamrit.com/wp-content/uploads/2018/03/Alien_Emoji-1.png')
+        link(rel='profile', href='https://gmpg.org/xfn/11')
+        link(rel='stylesheet', type='text/css', href='http://absoluteamrit.com/wp-content/plugins/minimal-coming-soon-maintenance-mode/framework/public/css/public.css')
+        script(src='//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js')
+        script.
+            WebFont.load( {
+                google: {
+                    families: ['Karla', 'Inika']
+                }
+            } );
+        style.
+            body{background-image:url("http://absoluteamrit.com/wp-content/uploads/2018/03/alien-spacecraft_1268-45.jpg");}
+            .header-text{font-family:"Karla", Arial, sans-serif;font-size:36px;color:#CCCCCC;}
+            .secondary-text{font-family:"Inika", Arial, sans-serif;font-size:20px;color:#CCCCCC;}
+            .anti-spam{font-family:"Inika", Arial, sans-serif;font-size:13px;color:#BBBBBB;}
+            .content{padding:30px;border-radius:10px;box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.33); background-color: rgba(0,0,0,0.55); max-width:700px;margin-left:auto;margin-right:auto;text-align:center;}
+            .content input{text-align:center;}
+            .content input[type="text"]{font-size:13px;color:#FFFFFF;border:1px solid #EEEEEE;}
+            .content input[type="text"]:focus{border:1px solid #BBBBBB;}
+            .content input[type="submit"]{font-size:12px;color:#FFFFFF;background:#0F0F0F;border:1px solid #0F0F0F;}
+            .content input[type="submit"]:hover,.content input[type="submit"]:focus{background:#0A0A0A;border:1px solid #0A0A0A;}
+            .signals-alert-success{background:#90C695;color:#FFFFFF;}
+            .signals-alert-danger{background:#E08283;color:#FFFFFF;}
+    body.signals-plugin
+        .maintenance-mode
+            .s-container
+                .content
+                    h1.header-text Coming soon...
+                    p.secondary-text
+                        | STAY TUNED!
+                        br
+                        | We're cooking a very COOL something.
+                    .subscription
+                        form(role='form', method='post')
+                            input(type='text', name='signals_email', placeholder='Enter your best email address')
+                            input(type='submit', name='submit', value='Subscribe')
+                // .content
+            // .s-container
+        // .maintenance-mode

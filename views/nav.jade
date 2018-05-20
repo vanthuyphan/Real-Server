@@ -1,0 +1,56 @@
+.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href='/')
+                | TERA
+                br
+                span Chonhadat
+        .collapse.navbar-collapse
+            ul.nav.navbar-nav.hidden-sm
+                li
+                    a.search(href='/ban') Nhà đất bán
+                li
+                    a.search(href='/cho-thue') Nhà đất thuê
+                li
+                    a(href='/du-an') Dự án mới
+            ul.nav.navbar-nav.hidden-xs.hidden-md.hidden-lg
+                li.dropdown
+                    a.dropdown-toggle(data-toggle='dropdown', href='#')
+                        | Menu
+                        span.caret
+                    ul.dropdown-menu
+                        li
+                            a(href='/ban') Nhà đất bán
+                        li
+                            a(href='/cho-thue') Nhà đất thuê
+                        li
+                            a(href='/du-an') Dự án mới
+            .navbar-right
+                button(onclick='goToPosting()').btn.btn-outline-white.navbar-btn.hidden-xs.pull-left.margin-right-5 Đăng tin miễn phí
+                ul.nav.navbar-nav
+                    if (user && user.mob)
+                        li.hidden-sm.hidden-md.hidden-lg
+                            a(href='#login_popup' rel="modal:open")
+                                | #{user.fin}
+                        li.hidden-sm.hidden-md.hidden-lg
+                            a(href='#login_popup' rel="modal:open")
+                                | Đăng xuất
+                    else
+                        li.hidden-sm.hidden-md.hidden-lg
+                            a(href='#login_popup' rel="modal:open")
+                                | Đăng ký / Đăng nhập
+                if (user && user.mob)
+                    .btn.btn-tera-user.hidden-xs
+                        div
+                            a(href='/tai-khoan')
+                                img(src=user.ava || "static/img/default-avatar.png")
+                        div
+                            a(href='/tai-khoan')
+                                b #{user.fin}
+                            a.logout(href='/dang-xuat') Đăng xuất
+                else
+                    a(href='#login_popup' rel="modal:open").btn.btn-outline-black.navbar-btn.hidden-xs.padding-top-5 Đăng ký / Đăng nhập

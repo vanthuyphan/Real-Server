@@ -1,0 +1,30 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width')
+        title JS Bin
+    body
+        input#file(type='file')
+        br
+        br
+        button#update
+            | Evaluate
+script.
+    document.getElementById('update').addEventListener('click', function () {
+        var files = document.getElementById('file').files;
+        if (files.length > 0) {
+            getBase64(files[0]);
+        }
+    });
+
+    function getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(reader.result);
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }

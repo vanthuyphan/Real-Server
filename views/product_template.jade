@@ -1,0 +1,21 @@
+each listing in listings || []
+    - var img = !listing.img ? '/static/img/default_listing.png' : !listing.img[0] ? '/static/img/default_listing.png' : listing.img[0];
+    .tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+        .block-body
+            .block-img
+                a.image(style='background-image: url(' + img + ')', href=listing.url)
+            .block-info
+                a(href=listing.url)
+                    h2.product-title #{listing.tit}
+                p
+                    | Giá:
+                    &nbsp
+                    b.color-orange #{listing.pri}
+                    |  #{listing.unit} - Diện tích:
+                    &nbsp
+                    b.color-orange #{listing.are}
+                    |  &#x33A1
+                if(listing.add)
+                    p.address
+                        i.fa.fa-map-marker.color-green(aria-hidden='true')
+                        |  #{listing.add}

@@ -1,0 +1,46 @@
+extends ./layout2.jade
+block head
+    script(type='application/ld+json').
+        {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+        "@id": "https://www.tera.vn/",
+        "name": "Tera",
+        }
+        },{
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+        "@id": "https://www.tera.vn/tin-tuc",
+        "name": "Tin Tức",
+        }
+        }]
+        }
+block content
+    .tera-body.container
+        .row
+            .col-xs-12
+                .panel.panel-tera-posting
+                    .panel-heading.no-padding
+                        span.text-left.title #{news.header}
+                    img.center-block(src=news.picture)
+        .row
+            .col-xs-12
+                .panel.panel-tera-posting
+                    !{news.content}
+block page-script
+    style.
+        .tera-body.container {
+            margin-top: 70px;
+        }
+    script.
+        var news = !{JSON.stringify(news || {})}
+        var meta = document.createElement('meta');
+        meta.name = "description";
+        meta.content = news.header.length > 160 ? news.header.substring(0, 159) : news.header;
+        $('head').append(meta);
+        document.title = meta.content;

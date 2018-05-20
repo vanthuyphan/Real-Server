@@ -1,0 +1,282 @@
+extend ./layout.jade
+block head
+block content
+    - var overview = !!project ? project.overviewTab : {};
+    - var videoTab = !!project ? project.videoTab : {};
+    - var locationTab = !!project ? project.locationTab : {};
+    - var featureTab = !!project ? project.featureTab : {};
+    - var progressTab = !!project ? project.progressTab : {};
+    - var sampleDesign = !!project ? project.sampleDesignTab : {};
+    - var paymentTab = !!project ? project.paymentTab : {};
+    - var templateHouseTab = !!project ? project.templateHouseTab : {};
+    .tera-body
+        .container-fluid
+            .row.hidden-sm.hidden-md.hidden-lg
+                .panel
+                    .panel-body
+                        include ./posting_button.jade
+            .row.text-center
+                .panel.panel-tera-light
+                    include ./search_input.jade
+        .container
+            ol.breadcrumb
+                li
+                    a.breadcrumb(href='/') Tera
+                li
+                    a.breadcrumb(href='/du-an') Dự Án
+                li
+                    a.breadcrumb(href='/du-an' + project.url) #{project.title}
+            h1
+                | #{project.title}
+        .container-fluid
+            .row
+                .col-xs-.col-centered
+                    #carousel.carousel.slide(data-ride='carousel', data-type='multi', data-interval='2500')
+                        .carousel-inner
+                            - var i = 0;
+                                each image in overview.images || []
+                                    if (i === 0)
+                                        - i++;
+                                        .item.active
+                                            .carousel-col
+                                                .block.img-responsive(style='background-size: cover; background-image: url(' + image + ')')
+                                    else
+                                        .item
+                                            .carousel-col
+                                                .block.img-responsive(style='background-size: cover; background-image: url(' + image + ')')
+                        // Controls
+                        .left.carousel-control
+                            a(href='#carousel', role='button', data-slide='prev')
+                                span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
+                                span.sr-only Previous
+                        .right.carousel-control
+                            a(href='#carousel', role='button', data-slide='next')
+                                span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
+                                span.sr-only Next
+        .container
+            .row.vertical-space
+                ul.nav.nav-tabs.tera-tabs
+                    li.active
+                        a.data-link(href='#intro') Giới thiệu
+                    if (!!locationTab && !!locationTab.description)
+                        li
+                            a.data-link(href='#location') Vị trí
+                    if (!!featureTab && !!featureTab.description)
+                        li
+                            a.data-link(href='#feature') Tiện ích
+                    if (!!sampleDesign && !!sampleDesign.overview)
+                        li
+                            a.data-link(href='#block') Căn hộ
+                    if (!!paymentTab && (!!paymentTab.description || !!paymentTab.images))
+                        li
+                            a.data-link(href='#pricing') Thanh toán
+                    if (!!videoTab && videoTab.urls)
+                        li
+                            a.data-link(href='#video') Video
+            .tab-content.clearfix
+                #intro
+                    .row
+                        h4 Giới Thiệu
+                    .row
+                        .col-sm-12
+                            .panel.panel-tera
+                                .panel-heading Tổng quan
+                                #general
+                                    .panel-body
+                                        | !{overview.description}
+                            .panel.panel-tera
+                                .panel-heading Quy mô dự án
+                                #scale
+                                    .panel-body
+                                        | !{overview.dimension}
+                        .col-sm-12
+                            .panel.panel-tera
+                                .panel-heading Chủ đầu tư
+                                #investor
+                                    if (overview.investor)
+                                        .panel-body
+                                            b #{overview.investor.name}
+                                            br
+                                            b Email :
+                                            | #{overview.investor.email}
+                                            br
+                                            b Phone:
+                                            | #{overview.investor.phone}
+                                            br
+                                            b Website:
+                                            | #{overview.investor.website}
+                                            br
+                                            b Address:
+                                            | #{overview.investor.address}
+                                            br
+                                            b Description:
+                                            | !{overview.investor.description}
+                                    else
+                                        .panel-body
+
+                            .panel.panel-tera
+                                .panel-heading Tiến độ dự án
+                                #progress
+                                    .panel-body
+                                        #myCarousel2.carousel.slide(data-ride='carousel', style='height: 400px;')
+                                            // Indicators
+                                            ol.carousel-indicators
+                                                - var i = 0;
+                                                    each progress in progressTab.progress || []
+                                                        each image in progress.images || []
+                                                            if (i == 0)
+                                                                - i++;
+                                                                li.active(data-target=i, data-slide-to=i)
+                                                            else
+                                                                - i++;
+                                                                li(data-target=i, data-slide-to=i)
+
+                                            // Wrapper for slides
+                                            .carousel-inner
+                                                - var i = 0;
+                                                    each progress in progressTab.progress || []
+                                                        each image in progress.images || []
+                                                            if (i == 0)
+                                                                - i++;
+                                                                .item.active
+                                                                    img(src=image.url alt="Progress" width='300px' height='500px')
+                                                            else
+                                                                .item
+                                                                    img(src=image.url alt="Progress" width='300px' height='500px')
+
+                                            // Left and right controls
+                                            a.left.carousel-control(href='#myCarousel2', data-slide='prev')
+                                                span.glyphicon.glyphicon-chevron-left
+                                                span.sr-only Previous
+                                            a.right.carousel-control(href='#myCarousel2', data-slide='next')
+                                                span.glyphicon.glyphicon-chevron-right
+                                                span.sr-only Next
+
+
+                #location
+                    .row
+                        h4 Vi trí
+                    .row
+                        .col-sm-12.col-md-12
+                            | !{locationTab.description}
+
+                        .col-sm-12.col-md-12
+                            each image in locationTab.images || []
+                                img.img-responsive.img-thumbnail(src=image alt='location', width='300px', height='500px')
+                #feature
+                    .row
+                        h4 Tiện ích
+                    .row
+                        .col-sm-12.col-md-12
+                            | !{featureTab.description}
+
+                        .col-sm-12.col-md-12
+                            each image in featureTab.images || []
+                                img.img-responsive.img-thumbnail(src=image alt='location')
+                #block
+                    .row
+                        h4 Căn hộ
+                    .row
+                        .col-sm-12.col-md-3
+                            .list-group
+                                a.list-group-item.active(onclick="selectTab(event, " + -10 + ")") Mặt bằng tổng thể
+                                - var i = 0;
+                                each sample in sampleDesign.samples || []
+                                    a.list-group-item(onclick="selectTab(event, " + i + ")")
+                                        | #{sample.title}
+                                    - i++;
+                        .col-sm-12.col-md-9
+                            img#block-image.img-responsive.img-thumbnail.col-xs-12(src=sampleDesign.overview || '' alt='sample', width='300px', height='500px')
+                            #floor_plan
+                #pricing
+                    .row
+                        h4 Thanh toán
+                    .row.text-center
+                        h3 TIẾN ĐỘ THANH TOÁN CĂN HỘ #{overview.title.toUpperCase()}
+                    .row
+                        panel.panel-tera
+                            if (paymentTab.description)
+                                | !{paymentTab.description}
+                            each image in paymentTab.images || []
+                                img.img-responsive.img-thumbnail.col-xs-12(src=image alt='sample' width='300px', height='500px')
+
+                #video
+                    .row
+                        h4 Video
+                        each url in videoTab.urls || []
+                            iframe(width='100%', height='315', src=url, frameborder='0', allowfullscreen='')
+block page-script
+    style.
+        .tera-body {
+            margin-top: 70px;
+            margin-bottom: 70px;
+        }
+    script.
+        $(".data-link").on('click', function (event) {
+            var target = $(this.getAttribute('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 150
+                }, 1000);
+            }
+        });
+        function selectTab(event, i) {
+            $('a.list-group-item').removeClass('active');
+            $(event.target).addClass('active');
+            if (sampleDesign && sampleDesign.samples[i]) {
+                var sample = sampleDesign.samples[i];
+                $("#block-image").attr('src', sample.image || '')
+                var floorPlanHTML = '';
+                $.each(sample.floor_plan, function (index, floorPlan) {
+                    console.log("Sample", floorPlan);
+                    floorPlanHTML += '<image class="img-responsive img-thumbnail col-xs-12" src='+ floorPlan.image + '></images>';
+                });
+                $("#floor_plan").html(floorPlanHTML);
+            } else {
+                $("#block-image").attr('src', sampleDesign.overview || '')
+            }
+        }
+        var project = !{JSON.stringify(project || {})}
+        var sampleDesign = !!project ? project.sampleDesignTab : {};
+        var myscript = document.createElement('script');
+        myscript.type = 'application/ld+json';
+        myscript.text = JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@id": "https://www.tera.vn",
+                    "name": "Tera",
+                }
+            }, {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "https://www.tera.vn/du-an",
+                    "name": "Du Án",
+                }
+            }, {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@id": "https://www.tera.vn/du-an" + project.url,
+                    "name": project.overviewTab.title,
+                }
+            }]
+        });
+        $('head').append(myscript);
+
+        var meta = document.createElement('meta');
+        meta.name = "description";
+        var overview = project.overviewTab || '';
+        var text = project.title;
+        meta.content = text.length > 135 ? text.substring(0, 134) : text+"- ID" + project.pid;
+        $('head').append(meta);
+        document.title = meta.content;
+
+
+
+

@@ -1,0 +1,68 @@
+extends ./layout.jade
+block head
+    script(type='application/ld+json').
+        {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+        "@id": "https://www.tera.vn/",
+        "name": "Tera",
+        }
+        },{
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+        "@id": "https://www.tera.vn/dang-nhap",
+        "name": "Đăng Nhập",
+        }
+        }]
+        }
+
+block content
+    .tera-body.container
+        ol.breadcrumb
+            li
+                a.breadcrumb(href='/') Tera
+            li
+                a.breadcrumb(href='/dang-nhap') Đăng Nhập
+        .row
+            .panel.panel-login.panel-default.col-xs-12.col-sm-8.col-md-6.col-lg-4.col-sm-offset-0.col-md-offset-3.col-lg-offset-4
+                .panel-body
+                    #login_popup.modal(style="display:none")
+                        form(action='/login', method='POST')
+                            fieldset
+                                legend Đăng Nhập
+                                .err
+                                    | #{errorMessage}
+                                .form-group
+                                    label.control-label(for='phone') Số điện thoại
+                                    input#phone.form-control(type='number', placeholder='Số điện thoại', name='phone', value=phoneNumber || "",required)
+                                .form-group
+                                    label.control-label(for='password') Mật khẩu
+                                    input#password.form-control(type='password', placeholder='Mật khẩu', name='password', value="", required)
+                                .form-group
+                                    label.control-label(for='login')
+                                    div
+                                        button#login.btn.btn-danger(type='submit', name='login', aria-label='') Đăng nhập
+                                        a#resgiter.btn.btn-link(href='/dang-ky' name='register', aria-label='') Đăng ký tài khoản
+
+                        form(action='/forget_password', method='POST')
+                            fieldset
+                                .form-group
+                                    label.control-label(for='phone') Quên mật khẩu?
+                                    input#email.form-control(type='text', required=true, name='phone', value=phone || '' ,placeholder='Nhập số điện thoại để nhận lại mật khẩu')
+                                .form-group
+                                    label.control-label(for='send')
+                                    div
+                                        button#send.btn.btn-danger(type='submit', name='send', aria-label='') Gửi
+
+block page-script
+    style.
+        .tera-body.container {
+            margin-top: 100px;
+        }
+    script.
+        $('#login_popup').modal();

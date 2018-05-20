@@ -1,0 +1,195 @@
+extend ./layout.jade
+block head
+    link(rel='stylesheet', href='/static/less/search-result-map.css')
+block content
+    .tera-body.container-fluid
+        .row.well.hidden-sm.hidden-md.hidden-lg
+            include ./posting_button.jade
+        .row.text-center
+            .panel
+                include ./search_input.jade
+        .row.text-right(style='height: 30px; background-color: darkgray')
+            | View options
+        .row
+            .panels.col-xs-12.col-sm-4.col-md-3.col-lg-2
+                .list-group
+                    a.list-group-item.active(href='#')
+                        | Cras justo odio
+                    a.list-group-item(href='#') Dapibus ac facilisis in
+                    a.list-group-item(href='#') Morbi leo risus
+                    a.list-group-item(href='#') Porta ac consectetur ac
+                    a.list-group-item(href='#') Vestibulum at eros
+                .panel-body
+                    form(method='post')
+                        .form-group
+                            label.control-label(for='name')
+                                | Quận
+                            input#name.form-control(name='name', placeholder='Quận bình tân', type='text')
+                        .form-group
+                            label.control-label(for='select')
+                                | Gi tiền
+                            input#select.select.form-control(name='select') From
+                                option(value='10tr')
+                                    | 10tr
+                                option(value='20tr')
+                                    | 20tr
+                                option(value='30tr')
+                                    | 30tr
+                        .form-group
+                            label.control-label(for='20tr')
+                                | Giá tiền
+                            select#20tr.select.form-control(name='20tr')
+                                option(value='30tr')
+                                    | 30tr
+                                option(value='40tr')
+                                    | 40tr
+                                option(value='50tr')
+                                    | 50tr
+                        .form-group
+                            label.control-label
+                                | Hiện trạng
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox', type='checkbox', value='Chưa bắt đầu')
+                                |                                     Chưa bắt đầu
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox', type='checkbox', value='Đang mở bán')
+                                |                                     Đang mở bán
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox', type='checkbox', value='Đang thực hiện')
+                                |                                     Đang thực hiện
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox', type='checkbox', value='Đã hoàn thành')
+                                |                                     Đã hoàn thành
+                        .form-group
+                            label.control-label
+                                | Pháp lý
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox1', type='checkbox', value='Có giấy phép xây dựng')
+                                |                                     Có giấy phép xây dựng
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox1', type='checkbox', value='Sổ đỏ')
+                                |                                     Sổ đỏ
+                                .checkbox
+                                label.checkbox
+                                input(name='checkbox1', type='checkbox', value='Sổ hồng')
+                                |                                     Sổ hồng
+                        .form-group
+                            div
+                                button.btn.btn-primary(name='submit', type='submit')
+                                    | Submit
+            .col-xs-12.col-sm-8.col-md-9.col-lg-10
+                .col-xs-12
+                    .row
+                        .tera-block.col-xs-12.col-sm-12.col-md-6.col-lg-6
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                        .panels.tera-block.col-xs-12.col-sm-6.col-md-3.col-lg-3
+                            .row
+                                .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                                    | Image
+                                .col-xs-7.col-sm-7.col-md-7.col-lg-7
+                                    .row
+                                        .col-xs-6
+                                            | Image 1
+                                        .col-xs-6
+                                            | Image 2
+                                    .row
+                                        | Info here
+                    .row.text-center
+                        ul.pagination
+                            li.disabled
+                                a(href='#') «
+                            li.active
+                                a(href='#') 1
+                            li
+                                a(href='#') 2
+                            li
+                                a(href='#') 3
+                            li
+                                a(href='#') 4
+                            li
+                                a(href='#') 5
+                            li
+                                a(href='#') »
+block page-script
+    style.
+        .tera-body.container {
+            margin-top: 70px;
+        }
+
+

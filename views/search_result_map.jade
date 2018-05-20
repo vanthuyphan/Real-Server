@@ -1,0 +1,247 @@
+doctype html
+html
+    head
+        title Search result - map
+        link(rel='stylesheet', href='/static/lib/bootstrap/css/bootstrap.min.css')
+        script(src='/static/lib/jquery.min.js')
+        script(src='/static/lib/bootstrap/js/bootstrap.min.js')
+        link(rel='stylesheet', href='/static/lib/font-awesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/static/lib/boostrap-custom/theme.min.css')
+        link(rel='stylesheet', href='/static/less/tera.css')
+        link(rel='stylesheet', href='/static/less/search-result-map.css')
+        link(href='https://fonts.googleapis.com/css?family=Open+Sans:300', rel='stylesheet')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+    body
+        .tera-layout-rh
+            .tera-header
+                include ./nav.jade
+            .tera-body.container-fluid
+                .row.text-center
+                    .panel.panel-tera-light
+                        .panel-body
+            .tera-layout-rh-main
+                .tera-layout-haft-left-panel.tera-layout-rh
+                    .tera-panel-head
+                        .container-fluid
+                            .row
+                                span.title Sản phẩm
+                                .btn-group.pull-right.hidden-xs
+                                    button(onclick='goBack()').btn.btn-primary
+                                        span.glyphicon.glyphicon-list
+                                        |  Danh sách
+                                //.btn-group.pull-right
+                                    button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                        | Sắp xếp
+                                        span.caret
+                                    ul.dropdown-menu
+                                        li
+                                            a(href='#') Action
+                                        li
+                                            a(href='#') Another action
+                                        li
+                                            a(href='#') Something else here
+                                        li.divider(role='separator')
+                                        li
+                                            a(href='#') Separated link
+                                .btn-group.pull-right
+                                    button#btn-filter.btn.btn-primary Bộ lọc
+                    .tera-layout-rh-main.scroll-y
+                        .container-fluid
+                            #filter-panel.row.hidden
+                                .panel.panel-tera-filter
+                                    div
+                                        .panel-body
+                                            form(method='post')
+                                                .col-lg-12
+                                                    .form-group
+                                                        label.control-label(for='city')
+                                                            | Thành Phố
+                                                        input#city.form-control(placeholder='Thành Phố', type='text')
+
+                                                    .form-group
+                                                        label.control-label(for='name')
+                                                            | Quận
+                                                        input#name.form-control(placeholder='Quận 1', type='text')
+                                                    .form-group
+                                                        label.control-label
+                                                            | Giá tiền (tỷ)
+                                                        input#pri.select.form-control(name='pri', placeholder="5")
+                                                    .form-group
+                                                        label.control-label
+                                                            | Diện tích (&#x33A1)
+                                                        input#are.select.form-control(name='are', placeholder="100")
+                                                    .form-group
+                                                        label.control-label(for='now')
+                                                            | Phòng ngủ
+                                                        select#nob.form-control
+                                                            option(value=1) 1
+                                                            option(value=2) 2
+                                                            option(value=3) 3
+                                                            option(value=4) 4
+                                                            option(value=5) 5
+                                                            option(value=6) 6
+                                                            option(value=7) 7
+                                                            option(value=8) 8
+                                                            option(value=9) 9
+                                                            option(value=10) 10
+
+                                                    .form-group
+                                                        label.control-label(for='now')
+                                                            | Phòng tắm
+                                                        select#now.form-control
+                                                            option(value=1) 1
+                                                            option(value=2) 2
+                                                            option(value=3) 3
+                                                            option(value=4) 4
+                                                            option(value=5) 5
+                                                            option(value=6) 6
+                                                            option(value=7) 7
+                                                            option(value=8) 8
+                                                            option(value=9) 9
+                                                            option(value=10) 10
+                                                    .form-separator
+                                                    .form-group
+                                                        label.control-label
+                                                            | Pháp lý
+                                                            .checkbox
+                                                            label.checkbox
+                                                            input(name='leg', type='checkbox', value=0)
+                                                            |                                         Có giấy phép xây dựng
+                                                            .checkbox
+                                                            label.checkbox
+                                                            input(name='leg', type='checkbox', value=1)
+                                                            |                                         Sổ đỏ
+                                                            .checkbox
+                                                            label.checkbox
+                                                            input(name='leg', type='checkbox', value=2)
+                                                            |                                         Sổ hồng
+                                                    .form-group
+                                                        div
+                                                            button#apply.btn.btn-primary(type='button')
+                                                                | Áp Dụng
+                            #result-panel.row
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like.active
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                                .tera-block.col-sm-6.col-lg-4
+                                    .block-body
+                                        .block-img
+                                            .image(style='background-image: url(/static/img/nha-pho.jpg)')
+                                            .like
+                                            .band đang mở bán
+                                        .block-info
+                                            h4 Xuất ngoại cần bán nhà mới xây Xuất ngoại cần bán nhà mới xây
+                                            p
+                                                | 3.6 tỷ/căn | 78 &#x33A1
+                                            p
+                                                i.fa.fa-map-marker(aria-hidden='true')
+                                                |  Quận Gò Vấp, TP.HCM
+                .tera-layout-haft-right-panel.hidden-xs.hidden-sm
+                    iframe(src='/map_view', scrolling='no')
+                #detailWindow.tera-layout-haft-right-panel.modal-xs.modal-sm
+                    iframe(src='/product_details_window', scrolling='no')
+
+        include ./footer.jade
+block page-script
+    script.
+        function closeDetailWindow() {
+            $("#detailWindow").css("display", "none");
+        }
+        $(function () {
+            $("#btn-filter").click(function () {
+                $(this).toggleClass("btn-danger");
+                var filtering = $(this).hasClass("btn-danger");
+                $("#filter-panel").toggleClass("hidden", !filtering);
+                $("#result-panel").toggleClass("hidden", filtering);
+            });
+        });
+        $(document).ready(function () {
+            $('.tera-advance-search').addClass('hidden');
+            $(".tera-advance-search-button").click(function () {
+                $('.tera-advance-search').toggleClass('hidden');
+                if ($('.tera-advance-search').first().hasClass('hidden')) {
+                    $(this).html("Tìm kiếm nâng cao")
+                } else {
+                    $(this).html("Thu gọn")
+                }
+            });
+        });
+
+        function goBack() {
+            window.history.back();
+        }

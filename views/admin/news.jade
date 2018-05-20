@@ -1,0 +1,73 @@
+extends ../layout2.jade
+block head
+block content
+ .tera-body.container
+  // row
+  .row
+   // col
+   .col-xs-12
+    // panel
+    .panel.panel-tera-posting
+     .panel-heading.no-padding
+      span.text-left.title Quản lý tin tức
+    // panel
+   // end col
+  // end row
+ .container#blog_admin
+  .err=msg
+  section#posts
+   a#add-class-form-btn.btn.btn-link(type='button', href='/quan-ly-category') Quản lý category
+   a#add-class-form-btn.btn.btn-primary(type='button', href='/them-tin-tuc')
+    i(class='fa fa-plus')  Tin Tức
+   table#table.table.table-hover.dt-responsive.nowrap(style='width: 100%')
+    thead
+     tr
+      th.text-left Sửa
+      th.text-left Ngày Tạo
+      th.text-left Tiêu đề
+      th.text-left Category
+      th.text-left Xóa
+
+    tbody
+     each post, index in posts || []
+      tr
+       td
+        a.tableClickable(href='/sua-tin-tuc?code=' + post.code)
+         i(class='fa fa-edit')
+       td #{new Date(post.created).toLocaleString('en-US')}
+       td #{post.header}
+       td #{post.categoryName}
+       td
+        i(type='button', class="fa fa-trash clickable", onclick="deletePost(" + post.code + ")")
+
+block page-script
+ style.
+  .tera-body.container {
+   margin-top: 70px;
+  }
+ style.
+  #table {
+   margin-top: 50px;
+  }
+  .tableClickable {
+   color: #2c2c2c;
+  }
+  .link {
+   color: #d8630f;
+  }
+
+  #tags {
+   margin-top: 150px;
+  }
+ script.
+     function deletePost(code) {
+         var r = confirm("Press OK if you want to delete this news ?");
+         if (r == true) {
+             $.post('/delete_news', {
+                 code: code
+             }, function (res, err) {
+                 location.reload();
+             })
+         }
+     }
+

@@ -1,0 +1,31 @@
+extend ./layout.jade
+block head
+
+block content
+    .tera-body.container
+        .row
+            .panel.panel-register.panel-default.text-center.col-xs-12.col-sm-8.col-md-6.col-lg-4.col-sm-offset-0.col-md-offset-3.col-lg-offset-4
+                .panel-body
+                    form(action='/activate', method='POST')
+                        .err
+                            | #{errorMessage}
+                        fieldset
+                            h5
+                                | Chúng tôi đang gửi tin nhắn SMS mã xác nhận đến số điện thoại
+                                b  #{phone}
+                            br
+                            .form-group
+                                input.form-control(type='text', placeholder='Nhập mã xác nhận', name='code', value=code || '')
+                                input.sr-only.form-control.input(type='phone', name='phone', value=phone || '')
+                            .form-group
+                                button#send.btn.btn-danger(type='submit', name='action', value='activate')
+                                    | Kích hoạt
+                                br
+                                button.btn.btn-link(type='submit', name='action', aria-label='', value='resend')
+                                    | Gửi lại mã
+block page-script
+    style.
+        .tera-body.container {
+            margin-top: 100px;
+        }
+

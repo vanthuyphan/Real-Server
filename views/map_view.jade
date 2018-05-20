@@ -1,0 +1,63 @@
+doctype html
+html
+    head
+        meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
+        meta(charset='utf-8')
+        title Marker Labels
+        style.
+            /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+            #map {
+                height: 100%;
+            }
+
+            /* Optional: Makes the sample page fill the window. */
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCqGIiz0D-0To4fE5J3H7qrVNOUcBVSpng')
+        script.
+            // In the following example, markers appear when the user clicks on the map.
+            // Each marker is labeled with a single alphabetical character.
+            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;
+            function initialize() {
+                var bangalore = {lat: 13.97, lng: 77.59};
+                var bangalore2 = {lat: 13.98, lng: 77.59};
+                var bangalore3 = {lat: 13.99, lng: 77.59};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: bangalore
+                });
+                // Add a marker at the center of the map.`
+                addMarker(bangalore, map);
+                addMarker(bangalore2, map);
+                addMarker(bangalore3, map);
+            }
+
+            // Adds a marker to the map.
+            function addMarker(location, map) {
+                // Add the marker at the clicked location, and add the next-available label
+                // from the array of alphabetical characters.
+                var marker = new google.maps.Marker({
+                    position: location,
+                    draggable: false,
+                    label: "Van Phan",
+                    map: map,
+                    icon: "/static/img/marker.svg"
+                });
+            }
+
+            function toggleBounce(event) {
+                var marker = event.getTarget();
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+    body
+        #map
