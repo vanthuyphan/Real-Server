@@ -13,7 +13,6 @@ let session = require('express-session');
 let bodyParser = require("body-parser");
 let router = require("./router");
 let now = {};
-let server = http.createServer(web);
 const spdy = require('spdy');
 
 function setup() {
@@ -53,11 +52,16 @@ exports.init = function (_now, cb) {
         process.on('uncaughtException', err => {
             console.log("ERRRORRRR: " + err);
         })
-        server.listen(3000, now.ini.web.host, function(err) {
-            if (err) throw err;
-
+        const options = {
+            cert: fs.readFileSync('/etc/letsencrypt/live/absoluteamrit.com/fullchain.pem'),
+            key: fs.readFileSync('/etc/letsencrypt/live/absoluteamrit.com/privkey.pem')
+        };
+        web.listen(80);
+        const server = https.createServer(options, web).listen(443, function (err) {
+            if (err) console.log(err);
             cb();
         });
+
 
     });
 };

@@ -31,6 +31,10 @@ function setupRegister() {
         next();
     }
 
+    now.web.get("/", function (req, res, next) {
+        res.render('index');
+    });
+
     now.web.post("/login", function (req, res, next) {
         const email = req.body.email;
         const password = req.body.password;
