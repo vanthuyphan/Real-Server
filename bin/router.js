@@ -45,18 +45,6 @@ router.use(function (req, res, next) {
 
 router.use(express.static('static'))
 
-router.get('/!*', function (req, res, next) {
-    if (req.headers.host.indexOf('www') <= -1) {
-        res.redirect('https://www.' + req.headers.host + req.url);
-    } else {
-        next();
-    }
-})
-
-router.get("/", function (req, res) {
-    console.log("Location", "/trang-chu");
-    res.render("index");
-});
 
 
 

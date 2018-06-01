@@ -34,6 +34,7 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth2": "^0.1.6",
     "passport-local": "^1.0.0",
+    "pdffiller": "0.0.10",
     "promise-arrays": "^0.1.0",
     "request": "^2.81.0",
     "spdy": "^3.4.7",

@@ -4,28 +4,19 @@
 "use strict";
 
 let passport = require('passport');
-let goNhaDatAPI = require('./gonhadatAPI');
-let LocalStrategy = require('passport-local').Strategy;
-let validator = require('./validator');
-
-const UNEXPECTED_ERROR = "Có lỗi xảy ra, vui lòng thử lại sau";
-const INVALID_PASSWORD = "Mật khẩu phải có ít nhất 6 kí tự";
-const SAME_PASSWORD = "Mật khẩu củ và mật khẩu mới không được trùng nhau";
-const MIS_MATCH = "Mật khẩu và mật khẩu xác nhận không trùng khớp";
-const INVALID_PHONE = "Số điện thoại phải từ 10-11 số";
-const DUPLICATED_PHONE = "Số điện thoại đã được đăng kí";
-const INVALID_OTP = 'Mã xác nhận không chính xác. Xin vui lòng nhập lại';
-const RESENT_OTP = 'Mã xác nhận đã được gửi lại';
-const AUTHENTICATE_FAILED = "Số điện thoại hoặc mật khẩu không chính xác. Xin vui lòng nhập lại";
-const SUCCESS = {message: 'ok'};
-const ERROR = {error: UNEXPECTED_ERROR};
-
+const nodemailer = require('nodemailer');
+var pdfFiller = require('pdffiller');
 let now, db;
-
+var transporter = nodemailer.createTransport("SMTP", {
+    service: 'gmail',
+    auth: {
+        user: 'vanthuyphan@gmail.com',
+        pass: 'F88kmenaya'
+    }
+});
 exports.init = (_now, cb) => {
     now = _now;
     db = now.db;
-    setupPassport();
     setupRegister();
     cb();
 }
@@ -40,300 +31,270 @@ function setupRegister() {
         next();
     }
 
-    now.web.get("/dang-ky", checkLogged, function (req, res) {
-        res.render("register");
+    now.web.post("/login", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        db.getUserByEmail(email.toLowerCase(), (error, user) => {
+            console.log("found user", user);
+            if (user && user.password == password) {
+                console.log("Loggging in")
+                res.send({"code": "0", "user": user});
+            } else {
+                res.send({"code": "1"});
+            }
+        })
     });
 
-    now.web.post("/register", checkLogged, function (req, res, next) {
-        const phone = req.body.phone;
-        if (!validator.isPhoneNumber(phone)) {
-            res.send({phone: phone, errorMessage: INVALID_PHONE});
-            return;
-        }
-        goNhaDatAPI.register(phone, function (err, result) {
-            result = JSON.parse(result);
-            switch (result.code) {
-                case 0:
-                    res.send(SUCCESS);
-                    break;
-                case 601:
-                    res.send({errorMessage: DUPLICATED_PHONE});
-                    break;
-                default:
-                    res.send({errorMessage: UNEXPECTED_ERROR});
-                    break;
+    now.web.post("/get-pulses", function (req, res, next) {
+        const id = req.body.userId;
+        console.log("Id", id);
+        db.getPulses(id, (error, pulses) => {
+            if (error) {
+                console.log("Bugs", error)
+                res.send({"code": "1"});
+            } else {
+                console.log("found pulses", pulses);
+                res.send({"code": "0", "pulses": pulses});
+            }
+        })
+    });
 
+    now.web.post("/delete-pulse", function (req, res, next) {
+        const id = req.body.pulseId;
+        console.log("Id", id);
+        db.deletePulse(id, (error) => {
+            if (error) {
+                console.log("Bugs", error)
+                res.send({"code": "1"});
+            } else {
+                console.log("deleted pulses");
+                res.send({"code": "0"});
+            }
+        })
+    });
+
+    now.web.post("/signup", function (req, res, next) {
+        const email = req.body.email.toLowerCase();
+        const password = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        const name = req.body.name;
+
+        let model = {
+            email: email,
+            name: name,
+            password: password,
+            verified: false
+        };
+        db.insertUser(model, (error, user) => {
+            if (user.code == undefined) {
+                res.send({"code": "1"});
+            } else {
+                const href = "127.0.0.1:3000/verify?code=" + user.code
+                let mailOptions = {
+                    from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
+                    to: email,
+                    subject: 'Please verify your email address ✔',
+                    html: 'Click here to verify your email address: ' + href
+                };
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    res.send({SUCCESS: "DONE"});
+                })
             }
         });
     });
 
-    now.web.post("/change_password_first_time", function (req, res, next) {
-        const phone = req.body.phone;
-        const confirm = req.body.confirm;
-        const name = req.user.fin;
-        const password = req.body.password;
-        const oldPassword = req.body.oldPassword;
-        if (confirm != password) {
-            res.send({errorMessage: MIS_MATCH});
-        } else if (oldPassword == password) {
-            res.send({errorMessage: SAME_PASSWORD});
-        } else if (!validator.isValidPassword(password)) {
-            res.send({errorMessage: INVALID_PASSWORD});
-        } else {
-            let tok = req.user.tok;
-            goNhaDatAPI.changePassword(tok, oldPassword, password, function (err, body) {
-                let result = JSON.parse(body);
-                switch (result.code) {
-                    case 0:
-                        res.send(SUCCESS);
-                        break;
-                    default:
-                        console.log('Error', result);
-                        res.send({errorMessage: UNEXPECTED_ERROR});
-                        break;
-
-                }
-            })
-        }
-    });
-
-    now.web.post("/change_password", function (req, res, next) {
-        console.log('change_password')
-        const phone = req.body.phone;
-        const confirm = req.body.confirm;
-        const password = req.body.password;
-        const oldPassword = req.body.oldPassword;
-        if (password == oldPassword) {
-            res.render("profile", {
-                tab: "doi-mat-khau",
-                phone: phone,
-                confirm: confirm,
-                oldPassword: oldPassword,
-                password: password,
-                errorMessage: SAME_PASSWORD
-            });
-        } else if (password != confirm) {
-            res.render("profile", {
-                tab: "doi-mat-khau",
-                phone: phone,
-                confirm: confirm,
-                oldPassword: oldPassword,
-                password: password,
-                errorMessage: MIS_MATCH
-            });
-        } else if (!validator.isValidPassword(password)) {
-            res.render("profile", {
-                tab: "doi-mat-khau",
-                phone: phone,
-                confirm: confirm,
-                oldPassword: oldPassword,
-                password: password,
-                errorMessage: INVALID_PASSWORD
-            });
-        } else {
-            let tok = req.user.tok;
-            goNhaDatAPI.changePassword(tok, oldPassword, password, function (err, body) {
-                let result = JSON.parse(body);
-                switch (result.code) {
-                    case 0:
-                        res.render("profile", {
-                            tab: "doi-mat-khau",
-                            phone: phone,
-                            confirm: '',
-                            oldPassword: '',
-                            password: '',
-                            errorMessage: "Mật khẩu đã được cập nhật"
-                        });
-                        break;
-                    case 401:
-                        res.render("profile", {
-                            tab: "doi-mat-khau",
-                            errorMessage: "Mật khẩu hiện tại không đúng",
-                            phone: phone,
-                            confirm: confirm,
-                            oldPassword: oldPassword,
-                            password: password
-                        });
-                        break;
-                    default:
-                        res.render("error");
-                        break;
-                }
-            })
-        }
-    });
-
-    now.web.post("/start", function (req, res, next) {
-        const name = req.body.name;
-        const tok = req.user.tok;
-        const uid = req.user.uid;
-        let user = req.user;
-        user.fin = name;
-        goNhaDatAPI.updateUser(tok, {fin: name, uid: uid}, function (err, body) {
-            let result = JSON.parse(body);
-            switch (result.code) {
-                case 0:
-                    req.login(user, function (err) {
-                        if (err) return next(err)
-                        res.send(SUCCESS);
-                        return;
-                    });
-                    break;
-                default:
-                    res.send({errorMessage: UNEXPECTED_ERROR});
-                    break;
-
-            }
-        })
-    });
-
-    now.web.post("/activate", function (req, res, next) {
-        const action = req.body.action;
+    now.web.post("/save-pulse", function (req, res, next) {
         const code = req.body.code;
-        const phone = req.body.phone;
-        if (action == 'activate') {
-            goNhaDatAPI.login(phone.trim(), code.trim(), 'deviceId', function (err, result) {
-                result = JSON.parse(result);
-                switch (result.code) {
-                    case 0:
-                        req.logIn(result.data, function (err) {
-                            if (err) {
-                                return next(err);
-                            } else {
-                                res.send(SUCCESS);
-                            }
-                        });
-                        break;
-                    case 403:
-                        res.send({errorMessage: INVALID_OTP});
-                        break;
-                    default:
-                        console.log("Error", result);
-                        res.send({errorMessage: UNEXPECTED_ERROR});
-                        break;
+        const email = req.body.email;
+        const userId = req.body.userId;
+        console.log("UserId", userId)
+        const name = req.body.name;
+        const height = req.body.height;
+        const weight = req.body.weight;
+        const dry = req.body.dry;
 
-                }
-            });
-
-        } else if (action == 'resend') {
-            goNhaDatAPI.forgetPassword(phone, function (err, result) {
-                result = JSON.parse(result);
-                switch (result.code) {
-                    case 0:
-                        res.send({
-                            errorMessage: RESENT_OTP
-                        });
-                        break;
-                    default:
-                        res.send({
-                            errorMessage: UNEXPECTED_ERROR
-                        });
-                        break;
-                }
-            })
-        }
-        ;
-    });
-}
-
-function setupPassport() {
-    passport.use(new LocalStrategy({
-            usernameField: 'phone',
-            passwordField: 'password'
-        },
-        function (phone, password, done) {
-            goNhaDatAPI.login(phone, password, "deviceId", function (err, body) {
-                body = JSON.parse(body);
-                if (err) {
-                    return done(err, false);
+        let model = {
+            dry: dry,
+            name: email,
+            height: name,
+            weight: weight,
+            code: code
+        };
+        if (code) {
+            db.updatePulse(model, (error) => {
+                if (error) {
+                    res.send({"code": "1"});
                 } else {
-                    return done(err, body);
+                    res.send({SUCCESS: "DONE"});
+                }
+            });
+        } else {
+            db.insertPulse(userId, model, (error, pulse) => {
+                if (pulse.code == undefined) {
+                    res.send({"code": "1"});
+                } else {
+                    res.send({SUCCESS: "DONE"});
                 }
             });
         }
-    ));
-
-    passport.serializeUser((user, done) => {
-        done(null, user);
     });
 
-    passport.deserializeUser((user, done) => {
-        done(null, user);
+    now.web.post("/get-pulse", function (req, res, next) {
+        const pulseId = req.body.pulseId;
+        db.getPulseByCode(pulseId, (error, pulse) => {
+            if (pulse.code == undefined) {
+                res.send({"code": "1"});
+            } else {
+                res.send({SUCCESS: "DONE", "pulse": pulse});
+            }
+        });
     });
-    now.web.use(passport.initialize());
-    now.web.use(passport.session());
 
-    now.web.post('/login', (req, res, next) => {
-        let error = "";
-        let currentPlace = req.body.currentPlace;
-        let nextPlace = req.body.nextPlace;
-        let phone = req.body.phone;
-        let password = req.body.password;
-        if (!validator.isPhoneNumber(phone)) {
-            error = INVALID_PHONE;
-        } else if (!validator.isValidPassword(password)) {
-            error = INVALID_PASSWORD
-        }
-        if (!!error) {
-            res.send({errorMessage: error});
-        } else {
-            passport.authenticate('local', {
-                successRedirect: '/dang-tin',
-                failureRedirect: '/dang-nhap'
-            }, (err, user, info) => {
-                if (err) {
-                    return next(err);
-                }
-                let code = user.code;
-                if (code == 0) {
-                    req.logIn(user.data, function (err) {
+    now.web.post("/email-pulse", function (req, res, next) {
+        const pulseId = req.body.pulseId;
+        const email = req.body.email;
+
+        let model = {
+            name: email,
+            height: 123,
+            weight: 123
+        };
+        db.getPulseByCode(pulseId, (error, pulse) => {
+            if (pulse.code == undefined) {
+                res.send({"code": "1"});
+            } else {
+
+                var sourcePDF = "profile_template.pdf";
+                var destinationPDF = "test_complete.pdf";
+                var data = {
+                    "Name": "Van P"
+                };
+                pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
+                    if (err) throw err;
+                    console.log("In callback (we're done).");
+                    let mailOptions = {
+                        from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
+                        to: "vanthuyphan@gmail.com",
+                        subject: 'New Form',
+                        body: 'mail content...',
+                        attachments: [{filename: 'test.pdf', filePath: destinationPDF}]
+                    };
+                    transporter.sendMail(mailOptions, function (err, success) {
                         if (err) {
-                            return next(err);
+                            console.log(err);
+                        } else {
+                            db.updateSystemNote(pulseId, "Sent at " + new Date().toLocaleString(), (err) => {
+                                res.send({SUCCESS: "DONE"});
+                            })
                         }
-                        res.send({place: currentPlace, nextPlace: nextPlace});
                     });
-                } else if (code == 403 || code == 600) {
-                    res.send({errorMessage: AUTHENTICATE_FAILED});
-                } else {
-                    res.send({errorMessage: UNEXPECTED_ERROR});
-                }
-
-            })(req, res, next);
-        }
+                });
+            }
+        });
     });
 
-    now.web.get('/dang-xuat', (req, res) => {
-        let user = req.user;
-        if (user && user.tok) {
-            req.logout();
-            goNhaDatAPI.logout(user.tok, (err, body) => {
-                if (err) {
-
-                }
-                res.redirect('/');
-            });
-        } else {
-            res.redirect('/');
-        }
+    now.web.get("/verify", function (req, res, next) {
+        const code = req.param('code');
+        console.log("Code", code);
+        db.verifyUser(code, (error) => {
+            res.send({"Congrats": "Thank you very much! Now you can log in using your email address"});
+        });
     });
 
-    now.web.post('/forget_password', (req, res) => {
-        const phone = req.body.phone;
-        if (!phone) {
-            res.send({errorMessage: "Xin điền số điện thoại"});
-            return;
-        }
-        goNhaDatAPI.forgetPassword(phone, (err, result) => {
-            result = JSON.parse(result);
-            switch (result.code) {
-                case 0:
-                    res.send(SUCCESS);
-                    break;
-                default:
-                    res.send({errorMessage: UNEXPECTED_ERROR});
-                    break;
+    now.web.post("/update-user", function (req, res, next) {
+        console.log("Updatign user")
+        const email = req.body.email;
+        const password = req.body.password;
+        const dob = req.body.dob;
+        const name = req.body.name;
+        const height = req.body.height;
+        const weight = req.body.weight;
+        const prakriti = req.body.prakriti;
 
+        let user = {
+            email: email,
+            password: password,
+            dob: dob,
+            name: name,
+            height: height,
+            weight: weight,
+            prakriti: prakriti
+        };
+        db.updateUser(user, (error) => {
+            console.log("found user", error);
+            if (!error) {
+                res.send({"code": "0", user: user});
+            } else {
+                res.send({"code": "1"});
             }
         })
-    })
+    });
+
+    now.web.post("/forget_password", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/save_log", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/get_logs", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/edit_log", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/delete_log", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/save_profile", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
+
+    now.web.post("/email_log", function (req, res, next) {
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.password;
+        console.log("Email", email)
+        console.log("Password", password)
+        res.send({"ERROR": "NONE"});
+    });
 }

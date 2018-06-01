@@ -13,9 +13,7 @@ exports.init = function (_now, cb) {
     now.db = db;
     cb();
 }
-/**
- * User
- */
+
 db.getUserByCode = function (code, cb) {
     now.mysql.query("SELECT * FROM `User` WHERE code=? LIMIT 1;", [code], function (err, rows) {
         if (rows) {
@@ -27,6 +25,7 @@ db.getUserByCode = function (code, cb) {
 };
 
 db.getUserByEmail = function (email, cb) {
+    console.log("Email", email);
     now.mysql.query("SELECT * FROM `User` WHERE email=? LIMIT 1;", [email], function (err, rows) {
         if (rows) {
             cb(err, rows[0]);
@@ -38,6 +37,20 @@ db.getUserByEmail = function (email, cb) {
 
 db.changePassword = function (email, password, cb) {
     now.mysql.query("UPDATE `User` SET password=? WHERE email=?;", [password, email], function (err) {
+        cb(err);
+    });
+};
+
+db.updateUser = function (user, cb) {
+    now.mysql.query("UPDATE `User` SET password=?, name=?, dob=?, height=?, weight=?, prakriti=? WHERE email=?;", [
+        user.password || "", 
+        user.name || "", 
+        user.dob || "", 
+        user.height || "", 
+        user.weight || "", 
+        user.prakriti || "", 
+        user.email || ""
+    ], function (err) {
         cb(err);
     });
 };
@@ -62,6 +75,87 @@ db.insertUser = function (model, cb) {
     });
 };
 
+db.insertPulse = function (userId, model, cb) {
+    now.mysql.query("INSERT INTO Pulse SET ?", {
+        name: model.name,
+        date: new Date().toLocaleString(),
+        day: model.day,
+        time: model.time,
+        activity: model.activity,
+        overall_impression: model.overall_impression,
+        dry: model.dry,
+        light: model.light,
+        cold: model.cold,
+        rough: model.rough,
+        clear: model.clear,
+        movable: model.movable,
+        sharp: model.sharp,
+        liquid: model.liquid,
+        subtle: model.subtle,
+        hard: model.hard,
+        oily: model.oily,
+        heavy: model.heavy,
+        smooth: model.smooth,
+        cloudy: model.cloudy,
+        stable: model.stable,
+        dull: model.dull,
+        gross: model.gross,
+        dense: model.dense,
+        soft: model.soft,
+        prana: model.prana,
+        quality_note: model.quality_note,
+        udana: model.udana,
+        samana: model.samana,
+        apana: model.apana,
+        vyana: model.vyana,
+        pachaka: model.pachaka,
+        ranjaka: model.ranjaka,
+        sadhaka: model.sadhaka,
+        alochaka: model.alochaka,
+        bhrajaka: model.bhrajaka,
+        kledaka: model.kledaka,
+        avalambaka: model.avalambaka,
+        tarpaka: model.tarpaka,
+        shelshaka: model.shelshaka,
+        bodhaka: model.bodhaka,
+        sub_dosha_note: model.sub_dosha_note,
+        rasa: model.rasa,
+        rakta: model.rakta,
+        mamsa: model.mamsa,
+        meda: model.meda,
+        asthi: model.asthi,
+        majja: model.majja,
+        rasa_tendency: model.rasa_tendency,
+        rakta_tendency: model.rakta_tendency,
+        mamsa_tendency: model.mamsa_tendency,
+        meda_tendency: model.meda_tendency,
+        shukra: model.shukra,
+        asthi_tendency: model.asthi_tendency,
+        majja_tendency: model.majja_tendency,
+        shukra_tendency: model.shukra_tendency,
+        dhatu_note: model.dhatu_note,
+        deep_level_type: model.deep_level_type,
+        deep_level_note: model.deep_level_note,
+        intepretation: model.intepretation,
+        comments: model.comments,
+        user: userId
+    }, function (err, result) {
+        if (result) {
+            model.code = result.insertId;
+        }
+        cb(err, model);
+    });
+};
+
+db.updatePulse = function (model, cb) {
+    now.mysql.query("UPDATE INTO Pulse SET dry=? WHERE code=?", [model.dry, model.code], function (err, result) {
+        if (result) {
+            model.code = result.insertId;
+        }
+        cb(err, model);
+    });
+};
+
 db.getUsers = function (cb) {
     now.mysql.query("SELECT * FROM `User`;", function (err, rows) {
         if (rows) {
@@ -72,9 +166,37 @@ db.getUsers = function (cb) {
     });
 };
 
-/**
- * Oauth
- */
+db.getPulses = function (userId, cb) {
+    now.mysql.query("SELECT * FROM `Pulse` WHERE user=?;", [userId], function (err, rows) {
+        if (rows) {
+            cb(err, rows);
+        } else {
+            cb(err);
+        }
+    });
+};
+
+db.getPulseByCode = function (code, cb) {
+    now.mysql.query("SELECT * FROM `Pulse` WHERE code=? LIMIT 1;", [code], function (err, rows) {
+        if (rows) {
+            cb(err, rows[0]);
+        } else {
+            cb(err);
+        }
+    });
+};
+
+db.updateSystemNote = function (code, note, cb) {
+    now.mysql.query("UPDATE `Pulse` SET system_note=? WHERE code=?;", [note, code], function (err) {
+        cb(err);
+    });
+};
+
+db.deletePulse = function (code, cb) {
+    now.mysql.query("DELETE FROM `Pulse` WHERE code=?", [code], function (err) {
+        cb(err);
+    });
+};
 
 db.insertOauth = function (model, cb) {
     now.mysql.query("INSERT INTO Oauth SET ?", {
