@@ -110,7 +110,7 @@ function setupRegister() {
                 const href = "https://absoluteamrit.com/verify?code=" + user.code
                 res.send({SUCCESS: "DONE"});
                 let mailOptions = {
-                    from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
+                    from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
                     to: email,
                     subject: 'Please verify your email address ✔',
                     html: 'Click here to verify your email address: ' + href
