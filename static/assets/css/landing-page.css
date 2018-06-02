@@ -838,9 +838,8 @@ a:focus, a:active {
 .logo-container .logo{
     overflow: hidden;
     border-radius: 50%;
-    border: 1px solid #333333;
-    width: 50px; 
-    float: left;
+    width: 50px;
+    float: right;
 }
 
 .logo-container .brand{
@@ -998,7 +997,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
 .landing-page .parallax .parallax-image{
   width: 100%;
   margin: 0 auto;
-  margin-top: 145px;
+  margin-top: 50px;
   float: right;
   text-align: center;
 }
