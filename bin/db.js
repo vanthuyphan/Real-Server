@@ -160,6 +160,9 @@ db.insertPulse = function (userId, model, cb) {
         comments: model.comments,
         user: userId
     }, function (err, result) {
+        if (err) {
+            console.log("Error", err);
+        }
         if (result) {
             model.code = result.insertId;
         }
