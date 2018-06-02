@@ -98,7 +98,7 @@ db.insertPulse = function (userId, model, cb) {
     console.log("Add Pulse ");
     now.mysql.query("INSERT INTO Pulse SET ?", {
         name: model.name,
-        date: new Date().toLocaleString(),
+        date: model.date,
         day: model.day,
         time: model.time,
         activity: model.activity,
@@ -191,7 +191,7 @@ db.getUsers = function (cb) {
 
 db.getPulses = function (userId, cb) {
     console.log("Get all pulses ");
-    now.mysql.query("SELECT code, system_note, date FROM `Pulse` WHERE user=?;", [userId], function (err, rows) {
+    now.mysql.query("SELECT code, system_note, date FROM `Pulse` WHERE user=? ORDER BY ts DESC;", [userId], function (err, rows) {
         if (rows) {
             cb(err, rows);
         } else {
