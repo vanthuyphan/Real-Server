@@ -1,6 +1,4 @@
-# robots.txt for https://tera.vn/
+# robots.txt for https://absoluteamrit.com/
 
 User-agent: *
 Disallow: /
-
-Sitemap: https://tera.vn/sitemap-index.xml
