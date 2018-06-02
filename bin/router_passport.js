@@ -10,8 +10,8 @@ let now, db;
 var transporter = nodemailer.createTransport("SMTP", {
     service: 'gmail',
     auth: {
-        user: 'vanthuyphan@gmail.com',
-        pass: 'F88kmenaya'
+        user: 'absoluteamrit@gmail.com',
+        pass: '12345678x@X'
     }
 });
 exports.init = (_now, cb) => {
@@ -32,7 +32,7 @@ function setupRegister() {
     }
 
     now.web.get("/", function (req, res, next) {
-        res.render('index');
+        res.render('landing');
     });
 
     now.web.post("/login", function (req, res, next) {
@@ -267,13 +267,13 @@ function setupRegister() {
                     "Shelshaka": pulse.shelshaka ? "Yes" : "No",
                     "Bodhaka": pulse.bodhaka ? "Yes" : "No",
                     "Sub Dosha Note": pulse.sub_dosha_note || "",
-                    "rasa": pulse.rasa ? "Yes" : "No",
-                    "rakta": pulse.rakta ? "Yes" : "No",
-                    "mamsa": pulse.mamsa ? "Yes" : "No",
-                    "meda": pulse.meda ? "Yes" : "No",
-                    "asthi": pulse.asthi ? "Yes" : "No",
-                    "majja": pulse.majja ? "Yes" : "No",
-                    "shukra": pulse.shukra ? "Yes" : "No",
+                    "Rasa": pulse.rasa ? "Yes" : "No",
+                    "Rakta": pulse.rakta ? "Yes" : "No",
+                    "Mamsa": pulse.mamsa ? "Yes" : "No",
+                    "Meda": pulse.meda ? "Yes" : "No",
+                    "Asthi": pulse.asthi ? "Yes" : "No",
+                    "Majja": pulse.majja ? "Yes" : "No",
+                    "Shukra": pulse.shukra ? "Yes" : "No",
                     "Rasa Tendency": pulse.rasa_tendency || "",
                     "Rakta Tendency": pulse.rakta_tendency || "",
                     "Mamsa Tendency": pulse.mamsa_tendency || "",
@@ -300,8 +300,8 @@ function setupRegister() {
                     if (err) console.log("Error", err);
                     console.log("In callback (we're done).");
                     let mailOptions = {
-                        from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
-                        to: "vanthuyphan@gmail.com",
+                        from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
+                        to: "absoluteamrit@gmail.com",
                         replyTo: email,
                         subject: 'New Form',
                         body: 'New Form from ' + email,

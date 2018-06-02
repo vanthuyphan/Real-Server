@@ -41,11 +41,11 @@ exports.init = function (_now, cb) {
         if (err) throw err;
 
         now.web.use(function (req, res) {
-            res.status(404).render("404");
+            res.status(404).send({error: "404"});
         });
 
         now.router.use((err, req, res, next) => {
-            res.status(500).render("error");
+            res.status(500).send({error: "500"});
             req.next(err);
         });
 
