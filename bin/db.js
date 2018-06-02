@@ -15,6 +15,7 @@ exports.init = function (_now, cb) {
 }
 
 db.getUserByCode = function (code, cb) {
+    console.log("Get User ");
     now.mysql.query("SELECT * FROM `User` WHERE code=? LIMIT 1;", [code], function (err, rows) {
         if (rows) {
             cb(err, rows[0]);
@@ -25,7 +26,7 @@ db.getUserByCode = function (code, cb) {
 };
 
 db.getUserByEmail = function (email, cb) {
-    console.log("Email", email);
+    console.log("Emailing", email);
     now.mysql.query("SELECT * FROM `User` WHERE email=? LIMIT 1;", [email], function (err, rows) {
         if (rows) {
             cb(err, rows[0]);
@@ -36,12 +37,14 @@ db.getUserByEmail = function (email, cb) {
 };
 
 db.changePassword = function (email, password, cb) {
+    console.log("Change password ");
     now.mysql.query("UPDATE `User` SET password=? WHERE email=?;", [password, email], function (err) {
         cb(err);
     });
 };
 
 db.updateUser = function (user, cb) {
+    console.log("Update User ");
     now.mysql.query("UPDATE `User` SET password=?, name=?, dob=?, height=?, weight=?, prakriti=? WHERE email=?;", [
         user.password || "", 
         user.name || "", 
@@ -56,12 +59,28 @@ db.updateUser = function (user, cb) {
 };
 
 db.verifyUser = function (code, cb) {
+    console.log("Verify user ");
     now.mysql.query("UPDATE `User` SET verified=true WHERE code=?;", [code], function (err) {
         cb(err);
     });
 };
 
+db.generateResetPassword = function (email, random, cb) {
+    console.log("generate random password password");
+    now.mysql.query("UPDATE `User` SET reset=? WHERE email=?;", [random, email], function (err) {
+        cb(err);
+    });
+};
+
+db.resetPassword = function (code, random, cb) {
+    console.log("reset password");
+    now.mysql.query("UPDATE `User` SET password=?, reset='' WHERE code=?;", [random, code], function (err) {
+        cb(err);
+    });
+};
+
 db.insertUser = function (model, cb) {
+    console.log("Add User ");
     now.mysql.query("INSERT INTO User SET ?", {
         email: model.email,
         name: model.name,
@@ -76,6 +95,7 @@ db.insertUser = function (model, cb) {
 };
 
 db.insertPulse = function (userId, model, cb) {
+    console.log("Add Pulse ");
     now.mysql.query("INSERT INTO Pulse SET ?", {
         name: model.name,
         date: new Date().toLocaleString(),
@@ -148,15 +168,15 @@ db.insertPulse = function (userId, model, cb) {
 };
 
 db.updatePulse = function (model, cb) {
-    now.mysql.query("UPDATE INTO Pulse SET dry=? WHERE code=?", [model.dry, model.code], function (err, result) {
-        if (result) {
-            model.code = result.insertId;
-        }
-        cb(err, model);
+    console.log("Updating Pulse");
+    now.mysql.query("UPDATE `Pulse` SET dry=? WHERE code=?", [model.dry || false, model.code], function (err, result) {
+        if (err) console.log(err)
+        cb(err);
     });
 };
 
 db.getUsers = function (cb) {
+    console.log("Get all users");
     now.mysql.query("SELECT * FROM `User`;", function (err, rows) {
         if (rows) {
             cb(err, rows);
@@ -167,7 +187,8 @@ db.getUsers = function (cb) {
 };
 
 db.getPulses = function (userId, cb) {
-    now.mysql.query("SELECT * FROM `Pulse` WHERE user=?;", [userId], function (err, rows) {
+    console.log("Get all pulses ");
+    now.mysql.query("SELECT code, system_note, date FROM `Pulse` WHERE user=?;", [userId], function (err, rows) {
         if (rows) {
             cb(err, rows);
         } else {
@@ -177,6 +198,7 @@ db.getPulses = function (userId, cb) {
 };
 
 db.getPulseByCode = function (code, cb) {
+    console.log("Get one pulse ");
     now.mysql.query("SELECT * FROM `Pulse` WHERE code=? LIMIT 1;", [code], function (err, rows) {
         if (rows) {
             cb(err, rows[0]);
@@ -187,18 +209,21 @@ db.getPulseByCode = function (code, cb) {
 };
 
 db.updateSystemNote = function (code, note, cb) {
+    console.log("Update system note");
     now.mysql.query("UPDATE `Pulse` SET system_note=? WHERE code=?;", [note, code], function (err) {
         cb(err);
     });
 };
 
 db.deletePulse = function (code, cb) {
+    console.log("Delete one pulse ");
     now.mysql.query("DELETE FROM `Pulse` WHERE code=?", [code], function (err) {
         cb(err);
     });
 };
 
 db.insertOauth = function (model, cb) {
+    console.log("Add Oauth ");
     now.mysql.query("INSERT INTO Oauth SET ?", {
         userCode: model.userCode,
         profileId: model.profileId,

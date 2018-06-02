@@ -40,9 +40,22 @@ function setupRegister() {
         const password = req.body.password;
         db.getUserByEmail(email.toLowerCase(), (error, user) => {
             console.log("found user", user);
-            if (user && user.password == password) {
+            let samePassword = user.password == password;
+            let resetPassword = user.reset == password;
+            if (user && samePassword) {
                 console.log("Loggging in")
                 res.send({"code": "0", "user": user});
+            } else if (user && resetPassword) {
+                console.log("Resetting");
+                db.resetPassword(user.code, user.reset, (error) => {
+                    if (error) {
+                        console.log("Error", error);
+                        res.send({"code": "1"});
+                    } else {
+                        res.send({"code": "0", "user": user});
+                    }
+
+                })
             } else {
                 res.send({"code": "1"});
             }
@@ -94,7 +107,7 @@ function setupRegister() {
             if (user.code == undefined) {
                 res.send({"code": "1"});
             } else {
-                const href = "127.0.0.1:3000/verify?code=" + user.code
+                const href = "https://absoluteamrit.com/verify?code=" + user.code
                 let mailOptions = {
                     from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
                     to: email,
@@ -116,7 +129,7 @@ function setupRegister() {
         const code = req.body.code;
         const email = req.body.email;
         const userId = req.body.userId;
-        console.log("UserId", userId)
+        console.log("code", code)
         const name = req.body.name;
         const height = req.body.height;
         const weight = req.body.weight;
@@ -159,6 +172,46 @@ function setupRegister() {
         });
     });
 
+    now.web.post("/reset", function (req, res, next) {
+        const email = req.body.email;
+        let random = "vanthuyphan";
+        db.getUserByEmail(email, (error, user) => {
+            if (user) {
+                db.generateResetPassword(email, random, (error) => {
+                    if (error) {
+                        res.send({"code": "1"});
+                    } else {
+                        res.send({SUCCESS: "DONE"});
+                        let mailOptions = {
+                            from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
+                            to: email,
+                            subject: 'New Form',
+                            body: 'Your temporary password is: ' + random,
+                        };
+                        transporter.sendMail(mailOptions, function (err, success) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                res.send({SUCCESS: "DONE"});
+                            }
+                        });
+                    }
+                });
+            } else {
+                res.send({"code": "1"});
+            }
+        })
+        ;
+    });
+
+    now.web.get("/confirm_reset", function (req, res, next) {
+        const code = req.param('code');
+        console.log("Code", code);
+        db.verifyUser(code, (error) => {
+            res.send({"Congrats": "Thank you very much! Now you can log in using your email address"});
+        });
+    });
+
     now.web.post("/email-pulse", function (req, res, next) {
         const pulseId = req.body.pulseId;
         const email = req.body.email;
@@ -172,7 +225,6 @@ function setupRegister() {
             if (pulse.code == undefined) {
                 res.send({"code": "1"});
             } else {
-
                 var sourcePDF = "profile_template.pdf";
                 var destinationPDF = "test_complete.pdf";
                 var data = {
