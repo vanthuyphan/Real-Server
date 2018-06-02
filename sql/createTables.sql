@@ -9,39 +9,17 @@ CREATE TABLE IF NOT EXISTS `_SessionSqlStore` (
 ) ENGINE MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
-CREATE TABLE IF NOT EXISTS `User` (
-	`code` BIGINT NOT NULL AUTO_INCREMENT,
-	`id` VARCHAR(100) UNIQUE,
-	`email` VARCHAR(100) UNIQUE,
-	`name` VARCHAR(100),
-	`gender` INT(2),
-	`phone` VARCHAR(20),
-	`height` VARCHAR(20),
-	`weight` VARCHAR(20),
-	`prakriti` VARCHAR(100),
-	`password` VARCHAR(100),
-	`reset` VARCHAR(100),
-	`verified` BOOLEAN,
-	PRIMARY KEY (`code`)
-) ENGINE MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-
-CREATE TABLE IF NOT EXISTS `Oauth` (
-	`userCode` BIGINT NOT NULL,
-	`profileId` VARCHAR(50),
-	`provider` NVARCHAR(50),
-	PRIMARY KEY (`userCode`, `provider`)
-) ENGINE MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-
+-- Create syntax for TABLE 'Pulse'
 CREATE TABLE `Pulse` (
   `code` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `date` varchar(20) DEFAULT NULL,
-    `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` varchar(100) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `day` varchar(20) DEFAULT NULL,
   `time` varchar(20) DEFAULT NULL,
   `height` varchar(20) DEFAULT NULL,
+  `dob` varchar(50) DEFAULT NULL,
+  `prikriti` varchar(500) DEFAULT NULL,
   `weight` varchar(20) DEFAULT NULL,
   `prakriti` varchar(100) DEFAULT NULL,
   `activity` varchar(200) DEFAULT NULL,
@@ -100,10 +78,30 @@ CREATE TABLE `Pulse` (
   `dhatu_note` varchar(200) DEFAULT NULL,
   `deep_level_type` varchar(20) DEFAULT NULL,
   `deep_level_note` varchar(200) DEFAULT NULL,
-  `intepretation` varchar(200) DEFAULT NULL,
+  `interpretation` varchar(200) DEFAULT NULL,
   `comments` varchar(200) DEFAULT NULL,
   `system_note` varchar(200) DEFAULT NULL,
   `user` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+
+-- Create syntax for TABLE 'User'
+CREATE TABLE `User` (
+  `code` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `gender` int(2) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `height` varchar(20) DEFAULT NULL,
+  `weight` varchar(20) DEFAULT NULL,
+  `prakriti` varchar(100) DEFAULT NULL,
+  `dob` varchar(100) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `verified` tinyint(1) DEFAULT NULL,
+  `reset` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`code`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 

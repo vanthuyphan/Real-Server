@@ -108,6 +108,7 @@ function setupRegister() {
                 res.send({"code": "1"});
             } else {
                 const href = "https://absoluteamrit.com/verify?code=" + user.code
+                res.send({SUCCESS: "DONE"});
                 let mailOptions = {
                     from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
                     to: email,
@@ -119,7 +120,6 @@ function setupRegister() {
                         return console.log(error);
                     }
                     console.log('Message sent: %s', info.messageId);
-                    res.send({SUCCESS: "DONE"});
                 })
             }
         });
@@ -129,19 +129,17 @@ function setupRegister() {
         const code = req.body.code;
         const email = req.body.email;
         const userId = req.body.userId;
-        console.log("code", code)
+        // Profile
         const name = req.body.name;
         const height = req.body.height;
         const weight = req.body.weight;
-        const dry = req.body.dry;
+        const prakriti = req.body.prakriti;
+        const dob = req.body.dob;
 
-        let model = {
-            dry: dry,
-            name: email,
-            height: name,
-            weight: weight,
-            code: code
-        };
+        //Log It
+        const activity = req.body.activity;
+        let model = req.body;
+        console.log("Model", model);
         if (code) {
             db.updatePulse(model, (error) => {
                 if (error) {
@@ -174,7 +172,7 @@ function setupRegister() {
 
     now.web.post("/reset", function (req, res, next) {
         const email = req.body.email;
-        let random = "vanthuyphan";
+        let random = "amrita" + Math.floor(Math.random() * Math.floor(1000));
         db.getUserByEmail(email, (error, user) => {
             if (user) {
                 db.generateResetPassword(email, random, (error) => {
@@ -216,29 +214,98 @@ function setupRegister() {
         const pulseId = req.body.pulseId;
         const email = req.body.email;
 
-        let model = {
-            name: email,
-            height: 123,
-            weight: 123
-        };
         db.getPulseByCode(pulseId, (error, pulse) => {
-            if (pulse.code == undefined) {
+            if (error || pulse.code == undefined) {
                 res.send({"code": "1"});
             } else {
                 var sourcePDF = "profile_template.pdf";
                 var destinationPDF = "test_complete.pdf";
+                console.log("The pulse", pulse);
+
                 var data = {
-                    "Name": "Van P"
+                    "Name": pulse.name || "",
+                    "Weight": pulse.weight || "",
+                    "DOB": pulse.dob || "",
+                    "Height": pulse.height || "",
+                    "Prakriti": pulse.prakriti || "",
+                    "Activity": pulse.activity || "",
+                    "Date": pulse.date || "",
+                    "Overall Impression": pulse.overall_impression || "",
+                    "Quality Note": pulse.quality_note || "",
+                    "Light": pulse.light ? "Yes" : "No",
+                    "Dry": pulse.dry ? "Yes" : "No",
+                    "Cold": pulse.cold ? "Yes" : "No",
+                    "Rough": pulse.rough ? "Yes" : "No",
+                    "Clear": pulse.clear ? "Yes" : "No",
+                    "Movable": pulse.movable ? "Yes" : "No",
+                    "Sharp": pulse.sharp ? "Yes" : "No",
+                    "Liquid": pulse.liquid ? "Yes" : "No",
+                    "Subtle": pulse.subtle ? "Yes" : "No",
+                    "Hard": pulse.hard ? "Yes" : "No",
+                    "Oily": pulse.oily ? "Yes" : "No",
+                    "Heavy": pulse.heavy ? "Yes" : "No",
+                    "Smooth": pulse.smooth ? "Yes" : "No",
+                    "Cloudy": pulse.cloudy ? "Yes" : "No",
+                    "Stable": pulse.stable ? "Yes" : "No",
+                    "Dull": pulse.dull ? "Yes" : "No",
+                    "Gross": pulse.gross ? "Yes" : "No",
+                    "Dense": pulse.dense ? "Yes" : "No",
+                    "Soft": pulse.soft ? "Yes" : "No",
+                    "Prana": pulse.prana ? "Yes" : "No",
+                    "Udana": pulse.udana ? "Yes" : "No",
+                    "Samana": pulse.samana ? "Yes" : "No",
+                    "Apana": pulse.apana ? "Yes" : "No",
+                    "Vyana": pulse.vyana ? "Yes" : "No",
+                    "Pachaka": pulse.pachaka ? "Yes" : "No",
+                    "Ranjaka": pulse.ranjaka ? "Yes" : "No",
+                    "Sadhaka": pulse.sadhaka ? "Yes" : "No",
+                    "Alochaka": pulse.alochaka ? "Yes" : "No",
+                    "Bhrajaka": pulse.bhrajaka ? "Yes" : "No",
+                    "Kledaka": pulse.kledaka ? "Yes" : "No",
+                    "Avalambaka": pulse.avalambaka ? "Yes" : "No",
+                    "Tarpaka": pulse.tarpaka ? "Yes" : "No",
+                    "Shelshaka": pulse.shelshaka ? "Yes" : "No",
+                    "Bodhaka": pulse.bodhaka ? "Yes" : "No",
+                    "Sub Dosha Note": pulse.sub_dosha_note || "",
+                    "rasa": pulse.rasa ? "Yes" : "No",
+                    "rakta": pulse.rakta ? "Yes" : "No",
+                    "mamsa": pulse.mamsa ? "Yes" : "No",
+                    "meda": pulse.meda ? "Yes" : "No",
+                    "asthi": pulse.asthi ? "Yes" : "No",
+                    "majja": pulse.majja ? "Yes" : "No",
+                    "shukra": pulse.shukra ? "Yes" : "No",
+                    "Rasa Tendency": pulse.rasa_tendency || "",
+                    "Rakta Tendency": pulse.rakta_tendency || "",
+                    "Mamsa Tendency": pulse.mamsa_tendency || "",
+                    "Meda Tendency": pulse.meda_tendency || "",
+                    "Asthi Tendency": pulse.asthi_tendency || "",
+                    "Majja Tendency": pulse.majja_tendency || "",
+                    "Shukra Tendency": pulse.shukra_tendency || "",
+                    "Dhatu Note": pulse.dhatu_note || "",
+                    "Deep Level Note": pulse.deep_level_note || "",
+                    "Interpretation": pulse.interpretation || "",
+                    "Additional Comments": pulse.comments || "",
+                    "Day Vata": pulse.day.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Time Vata": pulse.time.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Day Pitta": pulse.day.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Time Pita": pulse.time.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Day Kapha": pulse.day.indexOf("Kapha") > -1 ? "Yes" : "No",
+                    "Time Khapha": pulse.time.indexOf("Kapha") > -1 ? "Yes" : "No",
+                    "Deep Level Vata": pulse.deep_level_type.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Deep Level Pitta": pulse.deep_level_type.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Deep Level Kapha": pulse.deep_level_type.indexOf("Kapha") > -1 ? "Yes" : "No",
                 };
+
                 pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
-                    if (err) throw err;
+                    if (err) console.log("Error", err);
                     console.log("In callback (we're done).");
                     let mailOptions = {
                         from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
                         to: "vanthuyphan@gmail.com",
+                        replyTo: email,
                         subject: 'New Form',
-                        body: 'mail content...',
-                        attachments: [{filename: 'test.pdf', filePath: destinationPDF}]
+                        body: 'New Form from ' + email,
+                        attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
                     };
                     transporter.sendMail(mailOptions, function (err, success) {
                         if (err) {
