@@ -110,10 +110,10 @@ function setupRegister() {
                 const href = "https://absoluteamrit.com/verify?code=" + user.code
                 res.send({SUCCESS: "DONE"});
                 let mailOptions = {
-                    from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
+                    from: '"👽 Amrita Shrivastava 🇮🇳"absoluteamrit@gmail.com',
                     to: email,
-                    subject: 'Please verify your email address ✔',
-                    html: 'Click here to verify your email address: ' + href
+                    subject: 'Please verify your email address',
+                    html: 'Please click on this link to verify your email address: ' + href
                 };
                 transporter.sendMail(mailOptions, (error, info) => {
                     if (error) {
@@ -181,10 +181,10 @@ function setupRegister() {
                     } else {
                         res.send({SUCCESS: "DONE"});
                         let mailOptions = {
-                            from: '"Amrita Shrivastava 👻"amritashrivastava69@gmail.com',
+                            from: '"👽 Amrita Shrivastava 🇮🇳"absoluteamrit@gmail.com',
                             to: email,
-                            subject: 'New Form',
-                            body: 'Your temporary password is: ' + random,
+                            subject: 'You just reset your password?',
+                            body: 'Your temporary password is: ' + random + '. Please use this to log into the app then change your password',
                         };
                         transporter.sendMail(mailOptions, function (err, success) {
                             if (err) {
@@ -206,7 +206,7 @@ function setupRegister() {
         const code = req.param('code');
         console.log("Code", code);
         db.verifyUser(code, (error) => {
-            res.send({"Congrats": "Thank you very much! Now you can log in using your email address"});
+            res.send("Welcome fellow 🧘‍. Your account is verified. Now ahead and log into the app. Enjoy!");
         });
     });
 
