@@ -221,11 +221,10 @@ function setupRegister() {
                 var sourcePDF = "profile_template.pdf";
                 var destinationPDF = "test_complete.pdf";
                 console.log("The pulse", pulse);
-
                 var data = {
                     "Name": pulse.name || "",
                     "Weight": pulse.weight || "",
-                    "DOB": pulse.dob || "",
+                    "DOB": dob || "",
                     "Height": pulse.height || "",
                     "Prakriti": pulse.prakriti || "",
                     "Activity": pulse.activity || "",

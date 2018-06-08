@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `_SessionSqlStore` (
 
 
 -- Create syntax for TABLE 'Pulse'
+Drop table Pulse;
 CREATE TABLE `Pulse` (
   `code` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -45,6 +46,21 @@ CREATE TABLE `Pulse` (
   `gross` tinyint(1) DEFAULT NULL,
   `soft` tinyint(1) DEFAULT NULL,
   `quality_note` varchar(200) DEFAULT NULL,
+  `prana_tendency` varchar(100) DEFAULT NULL,
+    `udana_tendency` varchar(100) DEFAULT NULL,
+    `samana_tendency` varchar(100) DEFAULT NULL,
+    `apana_tendency` varchar(100) DEFAULT NULL,
+    `vyana_tendency` varchar(100) DEFAULT NULL,
+    `pachaka_tendency` varchar(100) DEFAULT NULL,
+    `ranjaka_tendency` varchar(100) DEFAULT NULL,
+    `sadhaka_tendency` varchar(100) DEFAULT NULL,
+        `alochaka_tendency` varchar(100) DEFAULT NULL,
+        `bhrajaka_tendency` varchar(100) DEFAULT NULL,
+        `kledaka_tendency` varchar(100) DEFAULT NULL,
+        `avalambaka_tendency` varchar(100) DEFAULT NULL,
+        `bodhaka_tendency` varchar(100) DEFAULT NULL,
+        `tarpaka_tendency` varchar(100) DEFAULT NULL,
+        `shelshaka_tendency` varchar(100) DEFAULT NULL,
   `prana` tinyint(1) DEFAULT NULL,
   `udana` tinyint(1) DEFAULT NULL,
   `samana` tinyint(1) DEFAULT NULL,
