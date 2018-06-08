@@ -225,7 +225,7 @@ function setupRegister() {
                 var data = {
                     "Name": pulse.name || "",
                     "Weight": pulse.weight || "",
-                    "DOB": dob || "",
+                    "DOB": pulse.dob || "",
                     "Height": pulse.height || "",
                     "Prakriti": pulse.prakriti || "",
                     "Activity": pulse.activity || "",
