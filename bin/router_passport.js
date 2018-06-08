@@ -142,6 +142,7 @@ function setupRegister() {
         console.log("Model", model);
         if (code) {
             db.updatePulse(model, (error) => {
+                console.log("Resulting", error);
                 if (error) {
                     res.send({"code": "1"});
                 } else {
