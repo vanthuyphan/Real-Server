@@ -162,6 +162,21 @@ db.insertPulse = function (userId, model, cb) {
         deep_level_note: model.deep_level_note || "",
         interpretation: model.interpretation || "",
         comments: model.comments || "",
+        apana_tendency: model.apana_tendency || "",
+        vyana_tendency: model.vyana_tendency || "",
+        pachaka_tendency: model.pachaka_tendency || "",
+        ranjaka_tendency: model.ranjaka_tendency || "",
+        sadhaka_tendency: model.sadhaka_tendency || "",
+        alochaka_tendency: model.alochaka_tendency || "",
+        bhrajaka_tendency: model.bhrajaka_tendency || "",
+        kledaka_tendency: model.kledaka_tendency || "",
+        avalambaka_tendency: model.avalambaka_tendency || "",
+        bodhaka_tendency: model.bodhaka_tendency || "",
+        tarpaka_tendency: model.tarpaka_tendency || "",
+        shelshaka_tendency: model.shelshaka_tendency || "",
+        prana_tendency: model.prana_tendency || "",
+        udana_tendency: model.udana_tendency || "",
+        samana_tendency: model.samana_tendency || "",
         user: userId
     }, function (err, result) {
         if (err) {
@@ -182,7 +197,9 @@ db.updatePulse = function (model, cb) {
         "samana=?,apana=?,vyana=?,pachaka=?,ranjaka=?,sadhaka=?,alochaka=?,bhrajaka=?,kledaka=?,avalambaka=?,tarpaka=?,shelshaka=?," +
         "bodhaka=?,sub_dosha_note=?,rasa=?,rakta=?,mamsa=?,meda=?,asthi=?,majja=?,rasa_tendency=?,rakta_tendency=?,mamsa_tendency=?," +
         "meda_tendency=?,shukra=?,asthi_tendency=?,majja_tendency=?,shukra_tendency=?,dhatu_note=?,deep_level_type=?,deep_level_note=?," +
-        "interpretation=?,comments=? WHERE code=?",
+        "interpretation=?,comments=?,prana_tendency=?,udana_tendency=?, samana_tendency=?, apana_tendency=?," +
+        " vyana_tendency=?, pachaka_tendency=?, ranjaka_tendency=?, sadhaka_tendency=?, alochaka_tendency=?, bhrajaka_tendency=?" +
+        " kledaka_tendency=?, avalambaka_tendency=?, bodhaka_tendency=?, tarpaka_tendency=?,shelshaka_tendency=? WHERE code=?",
         [model.dry || false,
         model.day,
         model.time,
@@ -242,6 +259,21 @@ db.updatePulse = function (model, cb) {
         model.deep_level_note,
         model.interpretation,
         model.comments,
+        model.prana_tendency,
+        model.udana_tendency,
+        model.samana_tendency,
+        model.apana_tendency,
+        model.vyana_tendency,
+        model.pachaka_tendency,
+        model.ranjaka_tendency,
+        model.sadhaka_tendency,
+        model.alochaka_tendency,
+        model.bhrajaka_tendency,
+        model.kledaka_tendency,
+        model.avalambaka_tendency,
+        model.bodhaka_tendency,
+        model.tarpaka_tendency,
+        model.shelshaka_tendency,
         model.code]
         , function (err, result) {
         if (err) console.log(err)
