@@ -275,7 +275,8 @@ db.updatePulse = function (model, callback) {
             model.tarpaka_tendency || "",
             model.shelshaka_tendency || "",
             model.code]
-        , function (err) {
+        , function (err, result) {
+            console.log("Geeting result");
             if (err) {
                 console.log(err)
             }
