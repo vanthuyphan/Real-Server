@@ -198,8 +198,8 @@ db.updatePulse = function (model, callback) {
         "bodhaka=?,sub_dosha_note=?,rasa=?,rakta=?,mamsa=?,meda=?,asthi=?,majja=?,rasa_tendency=?,rakta_tendency=?,mamsa_tendency=?," +
         "meda_tendency=?,shukra=?,asthi_tendency=?,majja_tendency=?,shukra_tendency=?,dhatu_note=?,deep_level_type=?,deep_level_note=?," +
         "interpretation=?,comments=?,prana_tendency=?,udana_tendency=?, samana_tendency=?, apana_tendency=?," +
-        " vyana_tendency=?, pachaka_tendency=?, ranjaka_tendency=?, sadhaka_tendency=?, alochaka_tendency=?, bhrajaka_tendency=?", +
-            " kledaka_tendency=?, avalambaka_tendency=?, bodhaka_tendency=?, tarpaka_tendency=?,shelshaka_tendency=? WHERE code=?",
+        " vyana_tendency=?, pachaka_tendency=?, ranjaka_tendency=?, sadhaka_tendency=?, alochaka_tendency=?, bhrajaka_tendency=?," +
+            " kledaka_tendency=?, avalambaka_tendency=?, bodhaka_tendency=?, tarpaka_tendency=?, shelshaka_tendency=? WHERE code=?",
         [model.dry || false,
             model.day || "",
             model.time || "",
