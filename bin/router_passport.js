@@ -154,7 +154,7 @@ function setupRegister() {
                 if (pulse.code == undefined) {
                     res.send({"code": "1"});
                 } else {
-                    res.send({SUCCESS: "DONE"});
+                    res.send({SUCCESS: "DONE", pulseId: pulse.code});
                 }
             });
         }
