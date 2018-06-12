@@ -171,6 +171,17 @@ function setupRegister() {
         });
     });
 
+    now.web.post("/get-user", function (req, res, next) {
+        const code = req.body.code;
+        db.getUserByCode(code, (error, user) => {
+            if (user.code == undefined) {
+                res.send({"code": "1"});
+            } else {
+                res.send({SUCCESS: "DONE", "user": user});
+            }
+        });
+    });
+
     now.web.post("/reset", function (req, res, next) {
         const email = req.body.email;
         let random = "amrita" + Math.floor(Math.random() * Math.floor(1000));
