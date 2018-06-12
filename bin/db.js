@@ -102,7 +102,7 @@ db.insertPulse = function (userId, model, cb) {
         weight: model.weight,
         dob: model.dob,
         prakriti: model.prakriti,
-        date: new Date().toLocaleString(),
+        date: model.date,
         day: model.day || "",
         time: model.time || "",
         activity: model.activity || "",
@@ -199,7 +199,7 @@ db.updatePulse = function (model, callback) {
         "meda_tendency=?,shukra=?,asthi_tendency=?,majja_tendency=?,shukra_tendency=?,dhatu_note=?,deep_level_type=?,deep_level_note=?," +
         "interpretation=?,comments=?,prana_tendency=?,udana_tendency=?, samana_tendency=?, apana_tendency=?," +
         " vyana_tendency=?, pachaka_tendency=?, ranjaka_tendency=?, sadhaka_tendency=?, alochaka_tendency=?, bhrajaka_tendency=?," +
-            " kledaka_tendency=?, avalambaka_tendency=?, bodhaka_tendency=?, tarpaka_tendency=?, shelshaka_tendency=? WHERE code=?",
+            " kledaka_tendency=?, avalambaka_tendency=?, bodhaka_tendency=?, tarpaka_tendency=?, shelshaka_tendency=?, date=? WHERE code=?",
         [model.dry || false,
             model.day || "",
             model.time || "",
@@ -274,6 +274,7 @@ db.updatePulse = function (model, callback) {
             model.bodhaka_tendency || "",
             model.tarpaka_tendency || "",
             model.shelshaka_tendency || "",
+            model.date || "",
             model.code]
         , function (err, result) {
             console.log("Geeting result");
