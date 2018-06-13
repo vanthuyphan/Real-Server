@@ -323,7 +323,7 @@ function setupRegister() {
                     "Deep Level Kapha": pulse.deep_level_type.indexOf("Kapha") > -1 ? "Yes" : "No",
                 };
 
-                if (email.indexOf("@") > -1) {
+                if (email != null && email.indexOf("@") > -1) {
                     pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
                         if (err) console.log("Error", err);
                         console.log("In callback (we're done).");
