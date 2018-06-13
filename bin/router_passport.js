@@ -338,9 +338,9 @@ function setupRegister() {
                             replyTo: email,
                             cc: email,
                             bcc: "vanthuyphan@gmail.com",
-                            subject: 'New Form',
-                            body: 'New Form from ' + email,
-                            attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
+                            subject: 'New pulse reading from ' + email,
+                            body: "",
+                            attachments: [{filename: 'pulse.pdf', filePath: destinationPDF}]
                         };
                         transporter.sendMail(mailOptions, function (err, success) {
                             if (err) {
