@@ -219,7 +219,7 @@ function setupRegister() {
         const code = req.param('code');
         console.log("Code", code);
         db.verifyUser(code, (error) => {
-            res.send("Welcome fellow 🧘‍. Your account is verified. Now ahead and log into the app. Enjoy!");
+            res.send("Reset, Your password was");
         });
     });
 
@@ -363,7 +363,7 @@ function setupRegister() {
         const code = req.param('code');
         console.log("Code", code);
         db.verifyUser(code, (error) => {
-            res.send({"Congrats": "Thank you very much! Now you can log in using your email address"});
+            res.send("Welcome fellow 🧘‍. Your account is verified. Now go ahead and use the app!");
         });
     });
 
