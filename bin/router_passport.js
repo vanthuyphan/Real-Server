@@ -330,7 +330,6 @@ function setupRegister() {
                         from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
                         to: "absoluteamrit@gmail.com",
                         replyTo: email,
-                        cc: email + "," + "vanthuyphan@gmail.com",
                         subject: 'New Form',
                         body: 'New Form from ' + email,
                         attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
