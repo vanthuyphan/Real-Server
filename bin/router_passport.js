@@ -225,7 +225,7 @@ function setupRegister() {
 
     now.web.post("/email-pulse", function (req, res, next) {
         const pulseId = req.body.pulseId;
-        const email = req.body.email || "";
+        let email = req.body.email || "";
 
         db.getPulseByCode(pulseId, (error, pulse) => {
             if (error || pulse.code == undefined) {
@@ -323,6 +323,11 @@ function setupRegister() {
                     "Deep Level Kapha": pulse.deep_level_type.indexOf("Kapha") > -1 ? "Yes" : "No",
                 };
 
+                if (email == "Amrita") {
+                    email = "amrita@tm@org";
+                } else if (email == "Van") {
+                    email = "vanthuyphan@gmail.com";
+                }
                 if (email.indexOf("@") > -1) {
                     pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
                         if (err) console.log("Error", err);
@@ -331,7 +336,7 @@ function setupRegister() {
                             from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
                             to: "absoluteamrit@gmail.com",
                             replyTo: email,
-                            cc: email + "," + "vanthuyphan@gmail.com",
+                            cc: email,
                             subject: 'New Form',
                             body: 'New Form from ' + email,
                             attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
