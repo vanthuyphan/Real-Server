@@ -323,28 +323,32 @@ function setupRegister() {
                     "Deep Level Kapha": pulse.deep_level_type.indexOf("Kapha") > -1 ? "Yes" : "No",
                 };
 
-                pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
-                    if (err) console.log("Error", err);
-                    console.log("In callback (we're done).");
-                    let mailOptions = {
-                        from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
-                        to: "absoluteamrit@gmail.com",
-                        replyTo: email,
-                        cc: email + "," + "vanthuyphan@gmail.com",
-                        subject: 'New Form',
-                        body: 'New Form from ' + email,
-                        attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
-                    };
-                    transporter.sendMail(mailOptions, function (err, success) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            db.updateSystemNote(pulseId, "Sent at " + new Date().toLocaleString(), (err) => {
-                                res.send({SUCCESS: "DONE"});
-                            })
-                        }
+                if (email && email.indexOf("@") > -1) {
+                    pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
+                        if (err) console.log("Error", err);
+                        console.log("In callback (we're done).");
+                        let mailOptions = {
+                            from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
+                            to: "absoluteamrit@gmail.com",
+                            replyTo: email,
+                            cc: email + "," + "vanthuyphan@gmail.com",
+                            subject: 'New Form',
+                            body: 'New Form from ' + email,
+                            attachments: [{filename: 'form.pdf', filePath: destinationPDF}]
+                        };
+                        transporter.sendMail(mailOptions, function (err, success) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                db.updateSystemNote(pulseId, "Sent at " + new Date().toLocaleString(), (err) => {
+                                    res.send({SUCCESS: "DONE"});
+                                })
+                            }
+                        });
                     });
-                });
+                } else {
+                    res.send({SUCCESS: "DONE"});
+                }
             }
         });
     });
