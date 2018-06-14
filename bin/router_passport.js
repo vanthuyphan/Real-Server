@@ -315,7 +315,7 @@ function setupRegister() {
                     "Day Vata": pulse.day.indexOf("Vata") > -1 ? "Yes" : "No",
                     "Time Vata": pulse.time.indexOf("Vata") > -1 ? "Yes" : "No",
                     "Day Pitta": pulse.day.indexOf("Pitta") > -1 ? "Yes" : "No",
-                    "Time Pita": pulse.time.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Time Pitta": pulse.time.indexOf("Pitta") > -1 ? "Yes" : "No",
                     "Day Kapha": pulse.day.indexOf("Kapha") > -1 ? "Yes" : "No",
                     "Time Khapha": pulse.time.indexOf("Kapha") > -1 ? "Yes" : "No",
                     "Deep Level Vata": pulse.deep_level_type.indexOf("Vata") > -1 ? "Yes" : "No",
