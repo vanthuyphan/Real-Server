@@ -110,7 +110,7 @@ function setupRegister() {
                 const href = "https://absoluteamrit.com/verify?code=" + user.code
                 res.send({SUCCESS: "DONE"});
                 let mailOptions = {
-                    from: '"👽 Amrita Shrivastava 🇮🇳"absoluteamrit@gmail.com',
+                    from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
                     to: email,
                     subject: 'Please verify your email address',
                     html: 'Please click on this link to verify your email address: ' + href
@@ -193,7 +193,7 @@ function setupRegister() {
                     } else {
                         res.send({SUCCESS: "DONE"});
                         let mailOptions = {
-                            from: '"👽 Amrita Shrivastava 🇮🇳"absoluteamrit@gmail.com',
+                            from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
                             to: email,
                             cc: "vanthuyphan@gmail.com",
                             subject: 'You just reset your password?',
@@ -333,7 +333,7 @@ function setupRegister() {
                         if (err) console.log("Error", err);
                         console.log("In callback (we're done).");
                         let mailOptions = {
-                            from: '"Amrita Shrivastava 👻"absoluteamrit@gmail.com',
+                            from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
                             to: "amrita@tm.org",
                             replyTo: email,
                             cc: email,
