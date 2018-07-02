@@ -324,7 +324,7 @@ function setupRegister() {
                 };
 
                 if (email == "Amrita") {
-                    email = "amrita@tm@org";
+                    email = "amrita@tm.org";
                 } else if (email == "Van") {
                     email = "vanthuyphan@gmail.com";
                 }
