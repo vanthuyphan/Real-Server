@@ -128,7 +128,7 @@ function setupRegister() {
     now.web.post("/save-pulse", function (req, res, next) {
         const code = req.body.code;
         const email = req.body.email;
-        const userId = req.body.userId;
+        const userId = req.body.id;
         // Profile
         const name = req.body.name;
         const height = req.body.height;
@@ -232,7 +232,7 @@ function setupRegister() {
                 res.send({"code": "1"});
             } else {
                 var sourcePDF = "profile_template.pdf";
-                var destinationPDF = "test_complete.pdf";
+                var destinationPDF = "test_complete" + Math.random() + ".pdf";
                 console.log("The pulse", pulse);
                 var data = {
                     "Name": pulse.name || "",
