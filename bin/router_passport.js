@@ -128,7 +128,7 @@ function setupRegister() {
     now.web.post("/save-pulse", function (req, res, next) {
         const code = req.body.code;
         const email = req.body.email;
-        const userId = req.body.id;
+        const userId = req.body.userId;
         // Profile
         const name = req.body.name;
         const height = req.body.height;
