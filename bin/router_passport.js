@@ -232,7 +232,7 @@ function setupRegister() {
                 res.send({"code": "1"});
             } else {
                 var sourcePDF = "profile_template.pdf";
-                var destinationPDF = "test_complete" + Math.random() + ".pdf";
+                var destinationPDF = "test_complete.pdf";
                 console.log("The pulse", pulse);
                 var data = {
                     "Name": pulse.name || "",
@@ -334,7 +334,7 @@ function setupRegister() {
                         console.log("In callback (we're done).");
                         let mailOptions = {
                             from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
-                            to: "vanthuyphan@gmail.com",
+                            to: "msmav@mum.edu",
                             replyTo: email,
                             cc: email,
                             bcc: "vanthuyphan@gmail.com",
