@@ -334,7 +334,7 @@ function setupRegister() {
                         console.log("In callback (we're done).");
                         let mailOptions = {
                             from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
-                            to: "msmav@mum.edu",
+                            to: "vanthuyphan@gmail.com",
                             replyTo: email,
                             cc: email,
                             bcc: "vanthuyphan@gmail.com",
