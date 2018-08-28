@@ -45,13 +45,14 @@ db.changePassword = function (email, password, cb) {
 
 db.updateUser = function (user, cb) {
     console.log("Update User ");
-    now.mysql.query("UPDATE `User` SET password=?, name=?, dob=?, height=?, weight=?, prakriti=? WHERE email=?;", [
+    now.mysql.query("UPDATE `User` SET password=?, name=?, dob=?, height=?, weight=?, prakriti=?, token=? WHERE email=?;", [
         user.password || "",
         user.name || "",
         user.dob || "",
         user.height || "",
         user.weight || "",
         user.prakriti || "",
+        user.token || "",
         user.email || ""
     ], function (err) {
         cb(err);
@@ -300,7 +301,7 @@ db.getUsers = function (cb) {
 
 db.getPulses = function (userId, cb) {
     console.log("Get all pulses ");
-    now.mysql.query("SELECT code, system_note, date FROM `Pulse` WHERE user=? ORDER BY ts DESC;", [userId], function (err, rows) {
+    now.mysql.query("SELECT code, system_note, submit_note, date FROM `Pulse` WHERE user=? ORDER BY ts DESC;", [userId], function (err, rows) {
         if (rows) {
             cb(err, rows);
         } else {
@@ -323,6 +324,13 @@ db.getPulseByCode = function (code, cb) {
 db.updateSystemNote = function (code, note, cb) {
     console.log("Update system note");
     now.mysql.query("UPDATE `Pulse` SET system_note=? WHERE code=?;", [note, code], function (err) {
+        cb(err);
+    });
+};
+
+db.updateSubmitNote = function (code, note, cb) {
+    console.log("Update submit note");
+    now.mysql.query("UPDATE `Pulse` SET submit_note=? WHERE code=?;", [note, code], function (err) {
         cb(err);
     });
 };

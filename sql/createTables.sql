@@ -121,3 +121,22 @@ CREATE TABLE `User` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
+ALTER TABLE User
+ADD token varchar(250);
+
+ALTER TABLE User
+ADD is_admin SMALLINT;
+
+ALTER TABLE Pulse
+ADD submit_note varchar(250);
+
+ALTER TABLE Pulse
+MODIFY activity text,
+MODIFY overall_impression text,
+MODIFY dhatu_note text,
+MODIFY deep_level_type text,
+MODIFY deep_level_note text,
+MODIFY interpretation text,
+MODIFY comments text,
+MODIFY sub_dosha_note text,
+MODIFY quality_note text;

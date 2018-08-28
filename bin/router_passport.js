@@ -6,7 +6,12 @@
 let passport = require('passport');
 const nodemailer = require('nodemailer');
 var pdfFiller = require('pdffiller');
+var request = require('request');
+var querystring = require('querystring');
 let now, db;
+const canvasUrl = "https://mum.instructure.com/api/v1/";
+const courseId = "24";
+//const token = "7~sgHnCY45GVJ5q0vetHYLuOjRNhGUseTxsenXO9MzBjHQsj64y33IQI62SSceu0jx";
 var transporter = nodemailer.createTransport("SMTP", {
     service: 'gmail',
     auth: {
@@ -223,6 +228,162 @@ function setupRegister() {
         });
     });
 
+    now.web.post("/submit-pulse", function (req, firstRes, next) {
+        const pulseId = req.body.pulseId;
+        const token = req.body.token;
+        let assignment = req.body.assignment || "9437881";
+
+        db.getPulseByCode(pulseId, (error, pulse) => {
+            if (error || pulse.code == undefined) {
+                firstRes.send({"code": "1"});
+            } else {
+                var sourcePDF = "profile_template.pdf";
+                var destinationPDF = "test_complete.pdf";
+                console.log("The pulse", pulse);
+                var data = {
+                    "Name": pulse.name || "",
+                    "Weight": pulse.weight || "",
+                    "DOB": pulse.dob || "",
+                    "Height": pulse.height || "",
+                    "Prakriti": pulse.prakriti || "",
+                    "Activity": pulse.activity || "",
+                    "Date": pulse.date || "",
+                    "Overall Impression": pulse.overall_impression || "",
+                    "Quality Note": pulse.quality_note || "",
+                    "Light": pulse.light ? "Yes" : "No",
+                    "Dry": pulse.dry ? "Yes" : "No",
+                    "Cold": pulse.cold ? "Yes" : "No",
+                    "Rough": pulse.rough ? "Yes" : "No",
+                    "Clear": pulse.clear ? "Yes" : "No",
+                    "Movable": pulse.movable ? "Yes" : "No",
+                    "Sharp": pulse.sharp ? "Yes" : "No",
+                    "Liquid": pulse.liquid ? "Yes" : "No",
+                    "Subtle": pulse.subtle ? "Yes" : "No",
+                    "Hard": pulse.hard ? "Yes" : "No",
+                    "Oily": pulse.oily ? "Yes" : "No",
+                    "Heavy": pulse.heavy ? "Yes" : "No",
+                    "Smooth": pulse.smooth ? "Yes" : "No",
+                    "Cloudy": pulse.cloudy ? "Yes" : "No",
+                    "Stable": pulse.stable ? "Yes" : "No",
+                    "Dull": pulse.dull ? "Yes" : "No",
+                    "Gross": pulse.gross ? "Yes" : "No",
+                    "Dense": pulse.dense ? "Yes" : "No",
+                    "Soft": pulse.soft ? "Yes" : "No",
+                    "Prana": pulse.prana ? "Yes" : "No",
+                    "Udana": pulse.udana ? "Yes" : "No",
+                    "Samana": pulse.samana ? "Yes" : "No",
+                    "Apana": pulse.apana ? "Yes" : "No",
+                    "Vyana": pulse.vyana ? "Yes" : "No",
+                    "Pachaka": pulse.pachaka ? "Yes" : "No",
+                    "Ranjaka": pulse.ranjaka ? "Yes" : "No",
+                    "Sadhaka": pulse.sadhaka ? "Yes" : "No",
+                    "Alochaka": pulse.alochaka ? "Yes" : "No",
+                    "Bhrajaka": pulse.bhrajaka ? "Yes" : "No",
+                    "Kledaka": pulse.kledaka ? "Yes" : "No",
+                    "Avalambaka": pulse.avalambaka ? "Yes" : "No",
+                    "Tarpaka": pulse.tarpaka ? "Yes" : "No",
+                    "Shelshaka": pulse.shelshaka ? "Yes" : "No",
+                    "Bodhaka": pulse.bodhaka ? "Yes" : "No",
+                    "Sub Dosha Note": pulse.sub_dosha_note || "",
+                    "Rasa": pulse.rasa ? "Yes" : "No",
+                    "Rakta": pulse.rakta ? "Yes" : "No",
+                    "Mamsa": pulse.mamsa ? "Yes" : "No",
+                    "Meda": pulse.meda ? "Yes" : "No",
+                    "Asthi": pulse.asthi ? "Yes" : "No",
+                    "Majja": pulse.majja ? "Yes" : "No",
+                    "Shukra": pulse.shukra ? "Yes" : "No",
+                    "Rasa Tendency": pulse.rasa_tendency || "",
+                    "Rakta Tendency": pulse.rakta_tendency || "",
+                    "Mamsa Tendency": pulse.mamsa_tendency || "",
+                    "Meda Tendency": pulse.meda_tendency || "",
+                    "Asthi Tendency": pulse.asthi_tendency || "",
+                    "Majja Tendency": pulse.majja_tendency || "",
+                    "Shukra Tendency": pulse.shukra_tendency || "",
+                    "Prana Tendency": pulse.prana_tendency || "",
+                    "Udana Tendency": pulse.udana_tendency || "",
+                    "Samana Tendency": pulse.samana_tendency || "",
+                    "Apana Tendency": pulse.apana_tendency || "",
+                    "Vyana Tendency": pulse.vyana_tendency || "",
+                    "Pachaka Tendency": pulse.pachaka_tendency || "",
+                    "Ranjaka Tendency": pulse.ranjaka_tendency || "",
+                    "Sadhaka Tendency": pulse.sadhaka_tendency || "",
+                    "Alochaka Tendency": pulse.alochaka_tendency || "",
+                    "Bhrajaka Tendency": pulse.bhrajaka_tendency || "",
+                    "Kledaka Tendency": pulse.kledaka_tendency || "",
+                    "Avalambaka Tendency": pulse.avalambaka_tendency || "",
+                    "Bodhaka Tendency": pulse.bodhaka_tendency || "",
+                    "Tarpaka Tendency": pulse.tarpaka_tendency || "",
+                    "Shelshaka Tendency": pulse.shelshaka_tendency || "",
+                    "Dhatu Note": pulse.dhatu_note || "",
+                    "Deep Level Note": pulse.deep_level_note || "",
+                    "Interpretation": pulse.interpretation || "",
+                    "Additional Comments": pulse.comments || "",
+                    "Day Vata": pulse.day.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Time Vata": pulse.time.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Day Pitta": pulse.day.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Time Pitta": pulse.time.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Day Kapha": pulse.day.indexOf("Kapha") > -1 ? "Yes" : "No",
+                    "Time Khapha": pulse.time.indexOf("Kapha") > -1 ? "Yes" : "No",
+                    "Deep Level Vata": pulse.deep_level_type.indexOf("Vata") > -1 ? "Yes" : "No",
+                    "Deep Level Pitta": pulse.deep_level_type.indexOf("Pitta") > -1 ? "Yes" : "No",
+                    "Deep Level Kapha": pulse.deep_level_type.indexOf("Kapha") > -1 ? "Yes" : "No",
+                };
+                pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
+                    if (err) firstRes.send({"code": "1"});;
+                    let jsonString = {"name": "pulse.pdf", "size": "110690", "content_type":"application/pdf", "parent_folder_path": "my_files", "url": "https://absoluteamrit.com/pdf/" + destinationPDF};
+                    let uri = canvasUrl + 'courses/' + courseId + '/assignments/' + assignment + '/submissions/self/files';
+                    request({
+                        headers: {
+                            'AUTHORIZATION': "Bearer " + token,
+                            'Content-Type': 'application/json'
+                        },
+                        uri: uri,
+                        body: JSON.stringify(jsonString),
+                        method: 'POST'
+                    }, function (err, res, body) {
+                        if (err) firstRes.send({"code": "1"});
+
+                        var body = JSON.parse(body);
+                        var form = body.upload_params;
+                        var formData = querystring.stringify(form);
+                        var contentLength = formData.length;
+                        request({
+                            headers: {
+                                'Content-Length': contentLength,
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            uri: body.upload_url,
+                            body: formData,
+                            method: 'POST'
+                        }, function (err, res, lastResponse) {
+                            if (err) firstRes.send({"code": "1"});
+                            body = JSON.parse(lastResponse);
+                            form = {"submission[submission_type]": "online_upload", "submission[file_ids][]": body.id, "comment[text_comment]": "Uploaded via Amrit"};
+                            formData = querystring.stringify(form);
+                            var contentLength = formData.length;
+                            request({
+                                headers: {
+                                    'AUTHORIZATION': "Bearer " + token,
+                                    'Content-Length': contentLength,
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                uri: canvasUrl + 'courses/' + courseId + '/assignments/' + assignment + '/submissions',
+                                body: formData,
+                                method: 'POST'
+                            }, function (err, res, body) {
+                                if (err) firstRes.send({"code": "1"});
+                                db.updateSubmitNote(pulseId, "Submitted at " + new Date().toLocaleString(), (err) => {
+                                    firstRes.send({SUCCESS: "DONE"});
+                                })
+
+                            });
+                        });
+                    });
+                })
+            }
+        });
+    });
+
     now.web.post("/email-pulse", function (req, res, next) {
         const pulseId = req.body.pulseId;
         let email = req.body.email || "";
@@ -233,7 +394,6 @@ function setupRegister() {
             } else {
                 var sourcePDF = "profile_template.pdf";
                 var destinationPDF = "test_complete.pdf";
-                console.log("The pulse", pulse);
                 var data = {
                     "Name": pulse.name || "",
                     "Weight": pulse.weight || "",
@@ -331,7 +491,6 @@ function setupRegister() {
                 if (email.indexOf("@") > -1) {
                     pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
                         if (err) console.log("Error", err);
-                        console.log("In callback (we're done).");
                         let mailOptions = {
                             from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
                             to: "msmav@mum.edu",
@@ -361,7 +520,6 @@ function setupRegister() {
 
     now.web.get("/verify", function (req, res, next) {
         const code = req.param('code');
-        console.log("Code", code);
         db.verifyUser(code, (error) => {
             res.send("Welcome fellow 🧘‍. Your account is verified. Now go ahead and use the app!");
         });
