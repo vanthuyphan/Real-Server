@@ -341,43 +341,49 @@ function setupRegister() {
                         body: JSON.stringify(jsonString),
                         method: 'POST'
                     }, function (err, res, body) {
+                        console.log("Body", body);
+                        body = JSON.parse(body);
+                        var checkingUrl = body.progress.url;
                         if (err) firstRes.send({"code": "1"});
+                        var timer = setTimeout(myFunction, 2000);
 
-                        var body = JSON.parse(body);
-                        var form = body.upload_params;
-                        var formData = querystring.stringify(form);
-                        var contentLength = formData.length;
-                        request({
-                            headers: {
-                                'Content-Length': contentLength,
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            uri: body.upload_url,
-                            body: formData,
-                            method: 'POST'
-                        }, function (err, res, lastResponse) {
-                            if (err) firstRes.send({"code": "1"});
-                            body = JSON.parse(lastResponse);
-                            form = {"submission[submission_type]": "online_upload", "submission[file_ids][]": body.id, "comment[text_comment]": "Uploaded via Amrit"};
-                            formData = querystring.stringify(form);
-                            var contentLength = formData.length;
+                        function myFunction() {
                             request({
                                 headers: {
                                     'AUTHORIZATION': "Bearer " + token,
-                                    'Content-Length': contentLength,
-                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type': 'application/json'
                                 },
-                                uri: canvasUrl + 'courses/' + courseId + '/assignments/' + assignment + '/submissions',
-                                body: formData,
-                                method: 'POST'
+                                uri: checkingUrl,
+                                method: 'GET'
                             }, function (err, res, body) {
-                                if (err) firstRes.send({"code": "1"});
-                                db.updateSubmitNote(pulseId, "Submitted at " + new Date().toLocaleString(), (err) => {
-                                    firstRes.send({SUCCESS: "DONE"});
-                                })
+                                body = JSON.parse(body);
+                                var form = {
+                                    "submission[submission_type]": "online_upload",
+                                    "submission[file_ids][]": body.results.id,
+                                    "comment[text_comment]": "Uploaded via Amrit"
+                                };
+                                var formData = querystring.stringify(form);
+                                console.log("Data", formData)
+                                var contentLength = formData.length;
+                                request({
+                                    headers: {
+                                        'AUTHORIZATION': "Bearer " + token,
+                                        'Content-Length': contentLength,
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    },
+                                    uri: canvasUrl + 'courses/' + courseId + '/assignments/' + assignment + '/submissions',
+                                    body: formData,
+                                    method: 'POST'
+                                }, function (err, res, body) {
+                                    console.log("Body1", body);
+                                    if (err) firstRes.send({"code": "1"});
+                                    db.updateSubmitNote(pulseId, "Submitted at " + new Date().toLocaleString(), (err) => {
+                                        firstRes.send({SUCCESS: "DONE"});
+                                    })
 
+                                });
                             });
-                        });
+                        }
                     });
                 })
             }
