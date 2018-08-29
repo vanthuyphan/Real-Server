@@ -238,7 +238,7 @@ function setupRegister() {
                 firstRes.send({"code": "1"});
             } else {
                 var sourcePDF = "profile_template.pdf";
-                var destinationPDF = "pdf/test_complete.pdf";
+                var destinationPDF = "static/pdf/test_complete.pdf";
                 console.log("The pulse", pulse);
                 var data = {
                     "Name": pulse.name || "",
@@ -330,7 +330,7 @@ function setupRegister() {
                 };
                 pdfFiller.fillForm(sourcePDF, destinationPDF, data, function (err) {
                     if (err) firstRes.send({"code": "1"});;
-                    let jsonString = {"name": "pulse.pdf", "size": "110690", "content_type":"application/pdf", "parent_folder_path": "my_files", "url": "https://absoluteamrit.com/pdf/" + destinationPDF};
+                    let jsonString = {"name": "pulse.pdf", "size": "110690", "content_type":"application/pdf", "parent_folder_path": "my_files", "url": "https://absoluteamrit.com/pdf/test_complete.pdf"};
                     let uri = canvasUrl + 'courses/' + courseId + '/assignments/' + assignment + '/submissions/self/files';
                     request({
                         headers: {
