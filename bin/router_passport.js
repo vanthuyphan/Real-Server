@@ -499,11 +499,11 @@ function setupRegister() {
                         if (err) console.log("Error", err);
                         let mailOptions = {
                             from: '"Amrita Shrivastava"absoluteamrit@gmail.com',
-                            to: "msmav@mum.edu",
+                            to: "pulseph500@gmail.com",
                             replyTo: email,
                             cc: email,
                             bcc: "vanthuyphan@gmail.com",
-                            subject: 'New pulse reading from ' + email,
+                            subject: 'New pulse pulseph500@gmail.comreading from ' + email,
                             body: "",
                             attachments: [{filename: 'pulse.pdf', filePath: destinationPDF}]
                         };
