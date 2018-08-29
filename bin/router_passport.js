@@ -503,7 +503,7 @@ function setupRegister() {
                             replyTo: email,
                             cc: email,
                             bcc: "vanthuyphan@gmail.com",
-                            subject: 'New pulse pulseph500@gmail.comreading from ' + email,
+                            subject: 'New pulse reading from ' + email,
                             body: "",
                             attachments: [{filename: 'pulse.pdf', filePath: destinationPDF}]
                         };
