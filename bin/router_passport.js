@@ -540,6 +540,7 @@ function setupRegister() {
         const height = req.body.height;
         const weight = req.body.weight;
         const prakriti = req.body.prakriti;
+        const token = req.body.token;
 
         let user = {
             email: email,
@@ -548,7 +549,8 @@ function setupRegister() {
             name: name,
             height: height,
             weight: weight,
-            prakriti: prakriti
+            prakriti: prakriti,
+            token: token
         };
         db.updateUser(user, (error) => {
             console.log("found user", error);
