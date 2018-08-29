@@ -44,7 +44,7 @@ db.changePassword = function (email, password, cb) {
 };
 
 db.updateUser = function (user, cb) {
-    console.log("Update User ");
+    console.log("Update User ", user);
     now.mysql.query("UPDATE `User` SET password=?, name=?, dob=?, height=?, weight=?, prakriti=?, token=? WHERE email=?;", [
         user.password || "",
         user.name || "",
