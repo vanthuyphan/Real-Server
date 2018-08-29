@@ -348,6 +348,7 @@ function setupRegister() {
                         var timer = setTimeout(myFunction, 2000);
 
                         function myFunction() {
+                            console.log("URL", checkingUrl)
                             request({
                                 headers: {
                                     'AUTHORIZATION': "Bearer " + token,
