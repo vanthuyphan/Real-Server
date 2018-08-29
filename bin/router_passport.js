@@ -343,6 +343,11 @@ function setupRegister() {
                     }, function (err, res, body) {
                         console.log("Body", body);
                         body = JSON.parse(body);
+                        if (!body.progress) {
+                            firstRes.send({"code": "1"});
+                        } else {
+
+                        }
                         var checkingUrl = body.progress.url;
                         if (err) firstRes.send({"code": "1"});
                         var timer = setTimeout(myFunction, 2000);
