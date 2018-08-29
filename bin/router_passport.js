@@ -238,7 +238,7 @@ function setupRegister() {
                 firstRes.send({"code": "1"});
             } else {
                 var sourcePDF = "profile_template.pdf";
-                var destinationPDF = "test_complete.pdf";
+                var destinationPDF = "pdf/test_complete.pdf";
                 console.log("The pulse", pulse);
                 var data = {
                     "Name": pulse.name || "",
