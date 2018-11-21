@@ -363,6 +363,7 @@ function setupRegister() {
                                 method: 'GET'
                             }, function (err, res, body) {
                                 body = JSON.parse(body);
+                                console.log("Second Body", body)
                                 if (!body.results) {
                                     firstRes.send({"code": "1"});
                                 } else {
