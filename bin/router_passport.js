@@ -350,7 +350,7 @@ function setupRegister() {
                         }
                         var checkingUrl = body.progress.url;
                         if (err) firstRes.send({"code": "1"});
-                        var timer = setTimeout(myFunction, 4000);
+                        var timer = setTimeout(myFunction, 8000);
 
                         function myFunction() {
                             console.log("URL", checkingUrl)
