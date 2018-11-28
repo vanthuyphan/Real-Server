@@ -366,12 +366,12 @@ function setupRegister() {
                                 console.log("resquest", res);
                                 body = JSON.parse(body);
                                 console.log("Second Body", body)
-                                if (!body.results) {
+                                if (!body.context_id) {
                                     firstRes.send({"code": "1"});
                                 } else {
                                     var form = {
                                         "submission[submission_type]": "online_upload",
-                                        "submission[file_ids][]": body.results.id,
+                                        "submission[file_ids][]": body.context_id,
                                         "comment[text_comment]": "Uploaded via Amrit"
                                     };
                                     var formData = querystring.stringify(form);
