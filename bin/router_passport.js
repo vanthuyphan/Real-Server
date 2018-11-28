@@ -342,6 +342,7 @@ function setupRegister() {
                         method: 'POST'
                     }, function (err, res, body) {
                         console.log("Body", body);
+                        console.log("resquest", res);
                         body = JSON.parse(body);
                         if (!body.progress) {
                             firstRes.send({"code": "1"});
@@ -362,6 +363,7 @@ function setupRegister() {
                                 uri: checkingUrl,
                                 method: 'GET'
                             }, function (err, res, body) {
+                                console.log("resquest", res);
                                 body = JSON.parse(body);
                                 console.log("Second Body", body)
                                 if (!body.results) {
@@ -385,6 +387,7 @@ function setupRegister() {
                                         body: formData,
                                         method: 'POST'
                                     }, function (err, res, body) {
+                                        console.log("resquest", res);
                                         console.log("Body1", body);
                                         if (err) firstRes.send({"code": "1"});
                                         db.updateSubmitNote(pulseId, "Submitted at " + new Date().toLocaleString(), (err) => {
