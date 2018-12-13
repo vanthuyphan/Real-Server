@@ -389,12 +389,12 @@ function setupRegister() {
                                         console.log("Second Bodt", body)
                                         console.log("Body1", body);
                                         console.log("resquest1", res);
-                                        if (!body.context_id) {
+                                        if (!body.results) {
                                             firstRes.send({"code": "1"});
                                         } else {
                                             var form = {
                                                 "submission[submission_type]": "online_upload",
-                                                "submission[file_ids][]": body.context_id,
+                                                "submission[file_ids][]": body.results.id,
                                                 "comment[text_comment]": "Uploaded via Amrit"
                                             };
                                             var formData = querystring.stringify(form);
