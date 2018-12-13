@@ -362,7 +362,7 @@ function setupRegister() {
                                 uri: body.upload_url,
                                 body: formData,
                                 method: 'POST'
-                            }, function (err, res, body) {
+                            }, function (err, resIgnored, bodyIgnore) {
                                 console.log("Body", body);
                                 console.log("resquest0", res);
                                 body = JSON.parse(body);
